@@ -44,14 +44,13 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-10">
         {NAV_LINKS.map((item) => (
-          <a
-            key={item}
-            href="#"
-            className="font-sans text-[13px] tracking-[0.12em] uppercase text-white/55 no-underline hover:text-white transition-colors duration-200"
-          >
-            {item}
-          </a>
-        ))}
+                      <a
+                        key={item}
+                        href={item === "Ebooks" ? "#livros" : `#${item.toLowerCase()}`}
+                        className="font-sans text-[13px] tracking-[0.12em] uppercase text-white/55 no-underline hover:text-white transition-colors duration-200"
+                      >
+                        {item}
+                      </a>        ))}
         <motion.a
           href="#livros"
           whileHover={{ scale: 1.03 }}

@@ -6,6 +6,8 @@ import { Header } from "./components/Header";
 import { HeroSection } from "./components/HeroSection";
 import { FeaturesStrip } from "./components/FeaturesStrip";
 import { BooksSection } from "./components/BooksSection";
+import { AboutSection } from "./components/AboutSection"; // New Import
+import { ContactSection } from "./components/ContactSection"; // New Import
 import { CtaSection } from "./components/CtaSection";
 import { Footer } from "./components/Footer";
 
@@ -27,6 +29,8 @@ export default function App() {
           <HeroSection />
           <FeaturesStrip />
           <BooksSection />
+          <AboutSection /> {/* New Section */}
+          <ContactSection /> {/* New Section */}
           <CtaSection />
         </main>
         <Footer />
