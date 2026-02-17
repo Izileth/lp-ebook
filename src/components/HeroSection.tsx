@@ -1,0 +1,111 @@
+// src/components/HeroSection.tsx
+import { motion } from "framer-motion";
+import { fadeUpVariants, staggerContainer } from "../motionVariants";
+import { STATS } from "../constants";
+import { IconArrowRight } from "./Icons";
+
+export function HeroSection() {
+  return (
+    <section className="min-h-screen flex items-center px-10 pt-24 pb-20 relative overflow-hidden">
+      {/* Vertical accent */}
+      <div
+        aria-hidden="true"
+        className="absolute left-1/2 top-[15%] h-[70%] w-px bg-gradient-to-b from-transparent via-white/30 to-transparent pointer-events-none"
+      />
+      {/* Circles */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ scale: 0.85, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
+        className="absolute right-[5%] top-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] pointer-events-none"
+        style={{ width: "clamp(300px,45vw,600px)", height: "clamp(300px,45vw,600px)" }}
+      />
+      <motion.div
+        aria-hidden="true"
+        initial={{ scale: 0.85, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 1.4, ease: "easeOut", delay: 0.5 }}
+        className="absolute right-[5%] top-1/2 translate-x-[12%] -translate-y-1/2 rounded-full border border-white/[0.03] pointer-events-none"
+        style={{ width: "clamp(200px,30vw,400px)", height: "clamp(200px,30vw,400px)" }}
+      />
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        className="max-w-[1200px] mx-auto w-full relative"
+      >
+        {/* Eyebrow */}
+        <motion.div variants={fadeUpVariants} className="mb-6">
+          <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-white/35 border-l-2 border-white/20 pl-3.5">
+            Plataforma de Conhecimento
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          variants={fadeUpVariants}
+          className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px]"
+          style={{ fontSize: "clamp(52px,9vw,120px)" }}
+        >
+          Conhecimento
+          <br />
+          <em className="not-italic text-white/70">que transforma.</em>
+        </motion.h1>
+
+        {/* Body */}
+        <motion.p
+          variants={fadeUpVariants}
+          className="font-sans font-light leading-[1.7] text-white/50 mb-12 max-w-[460px]"
+          style={{ fontSize: "clamp(15px,1.5vw,18px)" }}
+        >
+          Ebooks cuidadosamente selecionados para quem busca evolução real.
+          Conteúdo direto, profundo e aplicável.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div variants={fadeUpVariants} className="flex gap-4 flex-wrap mb-[72px]">
+          <motion.a
+            href="#livros"
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            className="bg-white text-black font-sans text-[13px] font-medium tracking-[0.1em] uppercase px-8 py-3.5 flex items-center gap-2 hover:bg-white/85 transition-colors"
+          >
+            Ver Ebooks <IconArrowRight />
+          </motion.a>
+          <motion.a
+            href="#sobre"
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            className="border border-white/25 text-white font-sans text-[13px] font-light tracking-[0.1em] uppercase px-7 py-3.5 hover:border-white/60 hover:bg-white/[0.04] transition-[border-color,background]"
+          >
+            Saiba mais
+          </motion.a>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div variants={staggerContainer} className="flex gap-10 flex-wrap">
+          {STATS.map(({ value, label }) => (
+            <motion.div key={label} variants={fadeUpVariants} className="border-l border-white/[0.14] pl-6">
+              <p className="[font-family:'Playfair_Display',serif] text-[28px] font-bold">{value}</p>
+              <p className="font-sans text-[12px] tracking-[0.15em] uppercase text-white/30 mt-0.5">{label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+
+      {/* Decorative letter */}
+      <motion.span
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2, delay: 0.8 }}
+        className="[font-family:'Playfair_Display',serif] font-black select-none pointer-events-none absolute right-[-10px] bottom-[-20px] text-white/[0.04] leading-[0.85] tracking-[-0.05em]"
+        style={{ fontSize: "clamp(140px,22vw,280px)" }}
+      >
+        F
+      </motion.span>
+    </section>
+  );
+}
