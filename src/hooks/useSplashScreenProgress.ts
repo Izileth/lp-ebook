@@ -86,7 +86,7 @@ export function AnimatedNumber({ to, duration }: AnimatedNumberProps) {
     return () => { controls.stop(); unsub(); };
   }, [to, duration, motionVal, rounded]);
 
-  return <>{display}</>;
+  return {display};
 }
 
 export { LOADING_STEPS, DURATION_MS };
