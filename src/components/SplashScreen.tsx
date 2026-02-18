@@ -1,93 +1,28 @@
-import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  useSplashScreenProgress,
+  AnimatedNumber,
+  LOADING_STEPS,
+  DURATION_MS,
+} from "../hooks/useSplashScreenProgress";
+import SplashLogo from "./SplashLogo"; // Import the new SplashLogo component
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface SplashScreenProps {
   onLoadingComplete: () => void;
-}
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const DURATION_MS = 3200;
-
-
-// Loading messages that scroll through during animation
-const LOADING_STEPS = [
-  "Inicializando plataforma",
-  "Carregando biblioteca",
-  "Preparando conteúdo",
-  "Quase lá",
-] as const;
-
-// ─── Animated counter sub-component ─────────────────────────────────────────
-
-interface AnimatedNumberProps {
-  to: number;
-  duration: number;
-}
-
-function AnimatedNumber({ to, duration }: AnimatedNumberProps) {
-  const motionVal = useMotionValue(0);
-  const rounded = useTransform(motionVal, (v) => Math.floor(v));
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const controls = animate(motionVal, to, {
-      duration: duration / 1000,
-      ease: "easeInOut",
-    });
-    const unsub = rounded.on("change", setDisplay);
-    return () => { controls.stop(); unsub(); };
-  }, [to, duration, motionVal, rounded]);
-
-  return <>{display}</>;
+  useFaviconAsLogo?: boolean; // New prop to control whether to use favicon or text logo
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
-  const [progress, setProgress] = useState(0);          // 0-100
-  const [stepIndex, setStepIndex] = useState(0);          // current label
-  const [reveal, setReveal] = useState(false);       // logo reveal phase
-  const [exiting, setExiting] = useState(false);       // exit phase
-  const startTime = useRef<number>(0);
-  const rafRef = useRef<number>(0);
-
-  // Drive progress via rAF for a smooth, non-linear feel
-  useEffect(() => {
-    startTime.current = Date.now();
-    const tick = () => {
-      const elapsed = Date.now() - startTime.current;
-      const raw = Math.min(elapsed / DURATION_MS, 1);
-
-      // Ease-in-out curve so it decelerates near 100%
-      const eased = raw < 0.5
-        ? 2 * raw * raw
-        : 1 - Math.pow(-2 * raw + 2, 2) / 2;
-
-      const pct = Math.floor(eased * 100);
-      setProgress(pct);
-
-      // Update loading message
-      const stepAt = Math.floor(eased * LOADING_STEPS.length);
-      setStepIndex(Math.min(stepAt, LOADING_STEPS.length - 1));
-
-      if (raw < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        // Brief pause at 100% before exit
-        setTimeout(() => setReveal(true), 200);
-        setTimeout(() => {
-          setExiting(true);
-          setTimeout(onLoadingComplete, 700);
-        }, 1000);
-      }
-    };
-
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [onLoadingComplete]);
+const SplashScreen: React.FC<SplashScreenProps> = ({
+  onLoadingComplete,
+  useFaviconAsLogo = true,
+}) => {
+  const { progress, stepIndex, reveal, exiting } =
+    useSplashScreenProgress(onLoadingComplete);
 
   return (
     <AnimatePresence>
@@ -143,39 +78,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
           />
 
           {/* ── Logo block ─────────────────────────────────────────────── */}
-          <motion.div
+          <SplashLogo
+            useFavicon={useFaviconAsLogo}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-            className="relative z-10 flex flex-col items-center mb-16"
-          >
-            {/* Logotype */}
-            <div className="flex items-baseline gap-3 mb-3">
-              <span
-                className="font-black tracking-[0.02em] text-white"
-                style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(40px,6vw,64px)" }}
-              >
-                FOCUS
-              </span>
-              <span
-                className="font-light tracking-[0.22em] uppercase text-white/35"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(11px,1.2vw,14px)" }}
-              >
-                | Conhecimento
-              </span>
-            </div>
-
-            {/* Tagline */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.55, duration: 0.7 }}
-              className="text-white/30 tracking-[0.3em] uppercase"
-              style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10 }}
-            >
-              Plataforma de ebooks
-            </motion.p>
-          </motion.div>
+          />
 
           {/* ── Progress area ──────────────────────────────────────────── */}
           <motion.div
