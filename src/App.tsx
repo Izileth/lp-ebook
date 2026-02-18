@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SplashScreen from "./components/SplashScreen"; // Import the SplashScreen component
 
 import { NoiseOverlay } from "./components/NoiseOverlay";
 import { MobileMenu } from "./components/MobileMenu";
@@ -13,6 +14,11 @@ import { Footer } from "./components/Footer";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Add loading state
+
+  if (isLoading) {
+    return <SplashScreen onLoadingComplete={() => setIsLoading(false)} />;
+  }
 
   return (
     <>

@@ -6,7 +6,7 @@ import { IconArrowRight } from "./Icons";
 
 export function HeroSection() {
   return (
-    <section className="min-h-screen flex items-center px-10 pt-24 pb-20 relative overflow-hidden">
+    <section id="home" className="min-h-screen flex items-center px-10 pt-24 pb-20 relative overflow-hidden">
       {/* Vertical accent */}
       <div
         aria-hidden="true"
