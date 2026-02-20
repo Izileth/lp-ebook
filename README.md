@@ -1,73 +1,49 @@
-# React + TypeScript + Vite
+# Focus Conhecimento - Landing Page de Ebooks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uma landing page moderna, elegante e performática para uma plataforma de ebooks, desenvolvida com React, TypeScript e Framer Motion.
 
-Currently, two official plugins are available:
+##  Sobre o Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O **Focus Conhecimento** é uma vitrine digital dedicada à curadoria de conteúdos que transformam. O projeto foca em oferecer uma experiência de usuário premium, com animações suaves, tipografia refinada e um design minimalista "dark mode".
 
-## React Compiler
+##  Funcionalidades
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **Splash Screen Interativa:** Tela de carregamento com barra de progresso dinâmica.
+- **Design Responsivo:** Otimizado para dispositivos móveis, tablets e desktops.
+- **Animações Fluidas:** Utilização de `framer-motion` para transições e revelações de conteúdo ao rolar a página.
+- **Seções Detalhadas:**
+  - **Hero:** Impacto inicial com estatísticas e chamadas para ação.
+  - **Livros:** Galeria de ebooks disponíveis com cards interativos.
+  - **Sobre:** Descrição da missão e valores da marca.
+  - **Contato:** Área dedicada para suporte e dúvidas.
+- **Efeitos Visuais:** Noise overlay para textura e gradientes sutis para profundidade.
 
-## Expanding the ESLint configuration
+##  Tecnologias Utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Core:** [React 18](https://reactjs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Estilização:** [Tailwind CSS](https://tailwindcss.com/)
+- **Animações:** [Framer Motion](https://www.framer.com/motion/)
+- **Fontes:** Playfair Display (Serifa) e DM Sans (Sans-serif) via Google Fonts.
+- **Ícones:** Lucide React (ou componentes SVG customizados).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+##  Como Executar
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. Para build de produção:
+   ```bash
+   npm run build
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+##  Design & Estilo
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+O projeto utiliza uma paleta de cores focada no preto e branco (Black & White) com variações de opacidade, proporcionando um visual sofisticado e focado no conteúdo ("Content-first"). A tipografia combina o clássico da *Playfair Display* com a modernidade da *DM Sans*.
