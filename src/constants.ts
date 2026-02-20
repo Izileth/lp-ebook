@@ -1,46 +1,49 @@
 // src/constants.ts
 import type { Book, Stat } from './types';
-
+import Image from './assets/images/image.jpg'
+import Image2 from './assets/images/image2.jpg'
+import Image3 from './assets/images/image3.jpg'
+import Image4 from './assets/images/image4.jpg'
 export const BOOKS: Book[] = [
   { 
     id: 1, 
-    title: "Mentalidade de Alto Desempenho",  
-    category: "Produtividade", 
+    title: "O Código Alfa",  
+    category: "Liderança",  
     price: "R$ 29,90", 
-    pages: "187 páginas", 
+    pages: "10 páginas", 
     badge: "Mais Vendido",
-    imageUrl: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=600&auto=format&fit=crop",
-    checkoutUrl: "https://pay.kiwify.com.br/placeholder1"
+    imageUrl: Image,
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
   },
   { 
     id: 2, 
     title: "Finanças Pessoais na Prática",    
-    category: "Finanças",      
+    category: "Liderança",      
     price: "R$ 24,90", 
-    pages: "142 páginas", 
+    pages: "12 páginas", 
     badge: "Novo",
-    imageUrl: "https://images.unsplash.com/photo-1554774853-719586f82d77?q=80&w=600&auto=format&fit=crop",
-    checkoutUrl: "https://pay.kiwify.com.br/placeholder2"
+    imageUrl: Image2,
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
   },
   { 
     id: 3, 
     title: "Liderança Sem Título",             
     category: "Liderança",     
     price: "R$ 34,90", 
-    pages: "210 páginas", 
+    pages: "10 páginas", 
     badge: null,
-    imageUrl: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=600&auto=format&fit=crop",
-    checkoutUrl: "https://pay.kiwify.com.br/placeholder3"
+    imageUrl: Image3,
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
   },
   { 
     id: 4, 
     title: "Foco: A Arte de Não se Distrair", 
-    category: "Produtividade", 
+    category: "Liderança",  
     price: "R$ 27,90", 
-    pages: "165 páginas", 
+    pages: "12 páginas", 
     badge: "Destaque",
-    imageUrl: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format&fit=crop",
-    checkoutUrl: "https://pay.kiwify.com.br/placeholder4"
+    imageUrl: Image4,
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
   },
 ];
 
