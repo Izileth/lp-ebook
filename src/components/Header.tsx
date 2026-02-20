@@ -33,9 +33,16 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
     >
       {/* Logo */}
       <div className="flex items-baseline gap-2">
-        <span className="[font-family:'Playfair_Display',serif] text-xl font-bold tracking-[0.02em]">
-          FOCUS
+        <span className="[font-family:'Playfair_Display',serif] text-xl font-bold tracking-[0.02em] flex items-center">
+          F
+          <img
+            src="/src/assets/favicons.png"
+            alt="Logo FOCUS"
+            className="h-7 w-7 object-contain"
+          />
+          CUS
         </span>
+
         <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/30">
           | Conhecimento
         </span>
@@ -44,13 +51,13 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-10">
         {NAV_LINKS.map((item) => (
-                      <a
-                        key={item}
-                        href={item === "Ebooks" ? "#livros" : `#${item.toLowerCase()}`}
-                        className="font-sans text-[13px] tracking-[0.12em] uppercase text-white/55 no-underline hover:text-white transition-colors duration-200"
-                      >
-                        {item}
-                      </a>        ))}
+          <a
+            key={item}
+            href={item === "Ebooks" ? "#livros" : `#${item.toLowerCase()}`}
+            className="font-sans text-[13px] tracking-[0.12em] uppercase text-white/55 no-underline hover:text-white transition-colors duration-200"
+          >
+            {item}
+          </a>))}
         <motion.a
           href="#livros"
           whileHover={{ scale: 1.03 }}
