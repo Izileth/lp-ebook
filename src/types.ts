@@ -7,6 +7,8 @@ export interface Book {
   price: string;
   pages: string;
   badge: string | null;
+  imageUrl: string;
+  checkoutUrl: string;
 }
 
 export interface Stat {
