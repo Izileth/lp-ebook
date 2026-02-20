@@ -3,42 +3,32 @@ import { motion } from "framer-motion";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { STATS } from "../constants";
 import { IconArrowRight } from "./Icons";
+import { VideoBackground } from "./VideoBackground";
 
 export function HeroSection() {
+  const videoPlaylist = [
+    "https://v1.pinimg.com/videos/iht/expMp4/e9/e6/3c/e9e63c701406e2e4ebdf5e540db3b7c6_720w.mp4",
+    "https://v1.pinimg.com/videos/iht/expMp4/73/10/0a/73100ac3ba00396f3c30bd44e558dce6_720w.mp4",
+    "https://v1.pinimg.com/videos/iht/expMp4/3c/66/82/3c6682f50ce9e73a6305fd549d25d18e_720w.mp4"
+  ];
+
   return (
-    <section id="home" className="min-h-screen flex items-center px-10 pt-24 pb-20 relative overflow-hidden">
-      {/* Vertical accent */}
-      <div
-        aria-hidden="true"
-        className="absolute left-1/2 top-[15%] h-[70%] w-px bg-gradient-to-b from-transparent via-white/30 to-transparent pointer-events-none"
-      />
-      {/* Circles */}
-      <motion.div
-        aria-hidden="true"
-        initial={{ scale: 0.85, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.3 }}
-        className="absolute right-[5%] top-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] pointer-events-none"
-        style={{ width: "clamp(300px,45vw,600px)", height: "clamp(300px,45vw,600px)" }}
-      />
-      <motion.div
-        aria-hidden="true"
-        initial={{ scale: 0.85, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.5 }}
-        className="absolute right-[5%] top-1/2 translate-x-[12%] -translate-y-1/2 rounded-full border border-white/[0.03] pointer-events-none"
-        style={{ width: "clamp(200px,30vw,400px)", height: "clamp(200px,30vw,400px)" }}
+    <section id="home" className="min-h-screen flex items-center px-10 pt-24 pb-20 relative overflow-hidden bg-black">
+      {/* Cinematic Video Background with Gradients and Playlist */}
+      <VideoBackground 
+        videoSources={videoPlaylist} 
+        overlayOpacity={0.4}
       />
 
       <motion.div
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="max-w-[1200px] mx-auto w-full relative"
+        className="max-w-[1200px] mx-auto w-full relative z-10"
       >
         {/* Eyebrow */}
         <motion.div variants={fadeUpVariants} className="mb-6">
-          <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-white/35 border-l-2 border-white/20 pl-3.5">
+          <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-white/50 border-l-2 border-white/40 pl-3.5 backdrop-blur-[2px]">
             Plataforma de Conhecimento
           </span>
         </motion.div>
@@ -46,18 +36,18 @@ export function HeroSection() {
         {/* Headline */}
         <motion.h1
           variants={fadeUpVariants}
-          className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px]"
+          className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px] text-white"
           style={{ fontSize: "clamp(52px,9vw,120px)" }}
         >
           Conhecimento
           <br />
-          <em className="not-italic text-white/70">que transforma.</em>
+          <em className="not-italic text-white/80">que transforma.</em>
         </motion.h1>
 
         {/* Body */}
         <motion.p
           variants={fadeUpVariants}
-          className="font-sans font-light leading-[1.7] text-white/50 mb-12 max-w-[460px]"
+          className="font-sans font-light leading-[1.7] text-white/70 mb-12 max-w-[460px] drop-shadow-sm"
           style={{ fontSize: "clamp(15px,1.5vw,18px)" }}
         >
           Ebooks cuidadosamente selecionados para quem busca evolução real.
