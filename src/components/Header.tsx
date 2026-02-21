@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { NAV_LINKS } from "../constants";
 import { IconMenu, IconArrowRight } from "./Icons";
-
+import Logo from '../../src/assets/favicons.png'
 interface HeaderProps {
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
@@ -36,7 +36,7 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
         <span className="[font-family:'Playfair_Display',serif] text-xl font-bold tracking-[0.02em] flex items-center">
           F
           <img
-            src="/src/assets/favicons.png"
+            src={Logo}
             alt="Logo FOCUS"
             className="h-7 w-7 object-contain"
           />
