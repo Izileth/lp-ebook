@@ -13,7 +13,8 @@ export const BOOKS: Book[] = [
     pages: "10 páginas", 
     badge: "Mais Vendido",
     imageUrl: Image,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
   { 
     id: 2, 
@@ -23,7 +24,8 @@ export const BOOKS: Book[] = [
     pages: "12 páginas", 
     badge: "Novo",
     imageUrl: Image2,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
+    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
   },
   { 
     id: 3, 
@@ -33,7 +35,8 @@ export const BOOKS: Book[] = [
     pages: "10 páginas", 
     badge: null,
     imageUrl: Image3,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
+    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
   },
   { 
     id: 4, 
@@ -43,7 +46,8 @@ export const BOOKS: Book[] = [
     pages: "12 páginas", 
     badge: "Destaque",
     imageUrl: Image4,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D"
+    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
+    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   },
 ];
 

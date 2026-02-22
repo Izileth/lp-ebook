@@ -1,5 +1,6 @@
 // src/components/BookCard.tsx
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import type { Book } from "../types";
 import { cardVariants } from "../motionVariants";
 import { IconBook, IconArrowRight } from "./Icons";
@@ -10,6 +11,12 @@ interface BookCardProps {
 }
 
 export function BookCard({ book, index }: BookCardProps) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/ebook/${book.id}`);
+  };
+
   const handleCheckout = () => {
     window.location.href = book.checkoutUrl;
   };
@@ -24,7 +31,7 @@ export function BookCard({ book, index }: BookCardProps) {
       whileHover={{ y: -6, borderColor: "rgba(255,255,255,0.28)" }}
       className="relative border border-white/[0.08] bg-[#0a0a0a] p-8 cursor-pointer group"
       style={{ transition: "border-color 0.25s" }}
-      onClick={handleCheckout}
+      onClick={handleCardClick}
     >
       {book.badge !== null && (
         <span className="absolute top-5 right-5 bg-white text-black font-sans text-[10px] tracking-[0.15em] uppercase px-2.5 py-0.5 z-10">

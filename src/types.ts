@@ -9,6 +9,7 @@ export interface Book {
   badge: string | null;
   imageUrl: string;
   checkoutUrl: string;
+  description: string;
 }
 
 export interface Stat {
