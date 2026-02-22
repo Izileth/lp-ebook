@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 html {
+    background-color: #000000;
+    color: #ffffff;
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
