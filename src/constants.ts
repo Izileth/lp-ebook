@@ -4,6 +4,7 @@ import Image from './assets/images/image.jpg'
 import Image2 from './assets/images/image2.jpg'
 import Image3 from './assets/images/image3.jpg'
 import Image4 from './assets/images/image4.jpg'
+
 export const BOOKS: Book[] = [
   { 
     id: 1, 
@@ -13,19 +14,19 @@ export const BOOKS: Book[] = [
     pages: "10 páginas", 
     badge: "Mais Vendido",
     imageUrl: Image,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    checkoutUrl: "https://pay.kiwify.com.br/FRT40YQ",
+    description: "Descubra os princípios mentais e comportamentais que diferenciam líderes comuns dos líderes de alta performance. Um guia prático para desenvolver autoconfiança, disciplina e visão estratégica no dia a dia."
   },
   { 
     id: 2, 
     title: "Finanças Pessoais na Prática",    
-    category: "Liderança",      
+    category: "Finanças",      
     price: "R$ 24,90", 
     pages: "12 páginas", 
     badge: "Novo",
     imageUrl: Image2,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
-    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    checkoutUrl: "https://pay.kiwify.com.br/FRT40YQ",
+    description: "Aprenda a gerenciar suas finanças pessoais de forma eficiente e estratégica. Um guia completo para construir uma base sólida de economia pessoal e alcançar estabilidade financeira."
   },
   { 
     id: 3, 
@@ -35,19 +36,19 @@ export const BOOKS: Book[] = [
     pages: "10 páginas", 
     badge: null,
     imageUrl: Image3,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
-    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    checkoutUrl: "https://pay.kiwify.com.br/FRT40YQ",
+    description: "Você não precisa de cargo para ser líder. Este livro mostra como assumir protagonismo, influenciar positivamente pessoas e construir autoridade através de atitudes, responsabilidade e consistência."
   },
   { 
     id: 4, 
     title: "Foco: A Arte de Não se Distrair", 
-    category: "Liderança",  
+    category: "Produtividade",  
     price: "R$ 27,90", 
     pages: "12 páginas", 
     badge: "Destaque",
     imageUrl: Image4,
-    checkoutUrl: "https://pay.kiwify.com.br/RPBdI3D",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    checkoutUrl: "https://pay.kiwify.com.br/FRT40YQ",
+    description: "Em um mundo cheio de distrações, manter o foco virou um superpoder. Aprenda técnicas práticas para eliminar ruídos, aumentar sua produtividade e concluir o que realmente importa."
   },
 ];
 
