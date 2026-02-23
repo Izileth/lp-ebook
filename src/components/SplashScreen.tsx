@@ -56,38 +56,52 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
 
   // Drive progress via rAF for a smooth, non-linear feel
   useEffect(() => {
-    startTime.current = Date.now();
-    const tick = () => {
-      const elapsed = Date.now() - startTime.current;
-      const raw = Math.min(elapsed / DURATION_MS, 1);
+  let mounted = true;
+  startTime.current = Date.now();
 
-      // Ease-in-out curve so it decelerates near 100%
-      const eased = raw < 0.5
+  const tick = () => {
+    if (!mounted) return;
+
+    const elapsed = Date.now() - startTime.current;
+    const raw = Math.min(elapsed / DURATION_MS, 1);
+
+    const eased =
+      raw < 0.5
         ? 2 * raw * raw
         : 1 - Math.pow(-2 * raw + 2, 2) / 2;
 
-      const pct = Math.floor(eased * 100);
-      setProgress(pct);
+    const pct = Math.floor(eased * 100);
+    setProgress(pct);
 
-      // Update loading message
-      const stepAt = Math.floor(eased * LOADING_STEPS.length);
-      setStepIndex(Math.min(stepAt, LOADING_STEPS.length - 1));
+    const stepAt = Math.floor(eased * LOADING_STEPS.length);
+    setStepIndex(Math.min(stepAt, LOADING_STEPS.length - 1));
 
-      if (raw < 1) {
-        rafRef.current = requestAnimationFrame(tick);
-      } else {
-        // Brief pause at 100% before exit
-        setTimeout(() => setReveal(true), 200);
+    if (raw < 1) {
+      rafRef.current = requestAnimationFrame(tick);
+    } else {
+      setTimeout(() => {
+        if (!mounted) return;
+        setReveal(true);
+      }, 200);
+
+      setTimeout(() => {
+        if (!mounted) return;
+        setExiting(true);
         setTimeout(() => {
-          setExiting(true);
-          setTimeout(onLoadingComplete, 700);
-        }, 1000);
-      }
-    };
+          if (!mounted) return;
+          onLoadingComplete();
+        }, 700);
+      }, 1000);
+    }
+  };
 
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [onLoadingComplete]);
+  rafRef.current = requestAnimationFrame(tick);
+
+  return () => {
+    mounted = false;
+    cancelAnimationFrame(rafRef.current);
+  };
+}, [onLoadingComplete]);
 
   return (
     <AnimatePresence>

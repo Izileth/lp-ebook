@@ -6,7 +6,7 @@ import { BookPage } from "../pages/BookPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App/>,
   },
   {
     path: "/ebook/:bookId",
