@@ -1,11 +1,42 @@
 // src/components/BooksSection.tsx
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
-import { BOOKS } from "../constants";
 import { IconBook, IconArrowRight } from "./Icons";
 import { BookCard } from "./BookCard";
+import { supabase } from "../lib/supabaseClient";
+import type { Book } from "../types";
 
 export function BooksSection() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchBooks() {
+      const { data, error } = await supabase.from("books").select("*");
+
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
+
+      setBooks(data as Book[]);
+      setLoading(false);
+    }
+
+    fetchBooks();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-white py-10">Carregando livros...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 py-10">Erro: {error}</div>;
+  }
+
   return (
     <section id="livros" className="px-10 py-[100px] border-b border-white/[0.05]">
       <div className="max-w-[1200px] mx-auto">
@@ -48,7 +79,7 @@ export function BooksSection() {
         </motion.div>
 
         <div className="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]">
-          {BOOKS.map((book, i) => (
+          {books.map((book, i) => (
             <BookCard key={book.id} book={book} index={i} />
           ))}
         </div>

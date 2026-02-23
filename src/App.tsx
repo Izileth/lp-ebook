@@ -10,6 +10,7 @@ import { BooksSection } from "./components/BooksSection";
 import { AboutSection } from "./components/AboutSection"; // New Import
 import { ContactSection } from "./components/ContactSection"; // New Import
 import { CtaSection } from "./components/CtaSection";
+import NewsletterSection from "./components/NewsletterSection";
 import { Footer } from "./components/Footer";
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
           <BooksSection />
           <AboutSection /> {/* New Section */}
           <ContactSection /> {/* New Section */}
+          <NewsletterSection />
           <CtaSection />
         </main>
         <Footer />

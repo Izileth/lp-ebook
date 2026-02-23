@@ -32,7 +32,7 @@ export function ContactSection() {
           <motion.div variants={fadeUpVariants} className="flex flex-col items-center gap-4 text-white/70 font-sans text-base">
             <p>Se tiver alguma dúvida ou precisar de suporte, entre em contato:</p>
             <a
-              href="mailto:contato@focusconhecimento.com"
+              href="mailto:contato@focusconhecimento.com?subject=Contato%20via%20Landing%20Page&body=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20seus%20ebooks."
               className="flex items-center gap-2 text-white/90 hover:text-white transition-colors underline"
             >
               <IconMail /> contato@focusconhecimento.com
