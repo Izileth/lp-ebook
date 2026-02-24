@@ -1,51 +1,21 @@
 // src/components/BooksSection.tsx
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { IconBook, IconArrowRight } from "./Icons";
 import { BookCard } from "./BookCard";
-import { createClient } from "@supabase/supabase-js";
-import type { Book } from "../types";
+import { useProducts } from "../hooks/useProducts";
+import { LoadingState, ErrorState } from "./ui/StatesScreens";
+import type { Product } from "../types";
 
 export function BooksSection() {
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL || "https://wnotjxleeltjysdlplkc.supabase.co",
-    import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_RMwjLRavgSgRELMsoYINtg_l4AldW2o"
-  );
-
-  useEffect(() => {
-    async function fetchBooks() {
-      if (!supabase) {
-        setError("O catálogo de livros não está disponível no momento.");
-        setLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase.from("books").select("*");
-
-      if (error) {
-        setError(error.message);
-        setLoading(false);
-        return;
-      }
-
-      setBooks(data as Book[]);
-      setLoading(false);
-    }
-
-    fetchBooks();
-  }, []);
+  const { products, loading, error } = useProducts();
 
   if (loading) {
-    return <div className="text-center text-white py-10">Carregando livros...</div>;
+    return <LoadingState />;
   }
 
   if (error) {
-    return <div className="text-center text-red-500 py-10">Erro: {error}</div>;
+    return <ErrorState error={error}/>;
   }
 
   return (
@@ -90,7 +60,7 @@ export function BooksSection() {
         </motion.div>
 
         <div className="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]">
-          {books.map((book, i) => (
+          {products.map((book: Product, i: number) => (
             <BookCard key={book.id} book={book} index={i} />
           ))}
         </div>

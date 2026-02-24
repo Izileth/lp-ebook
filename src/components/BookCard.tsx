@@ -1,12 +1,12 @@
 // src/components/BookCard.tsx
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import type { Book } from "../types";
+import type { Product } from "../types";
 import { cardVariants } from "../motionVariants";
 import { IconBook, IconArrowRight } from "./Icons";
 
 interface BookCardProps {
-  book: Book;
+  book: Product;
   index: number;
 }
 
@@ -20,6 +20,8 @@ export function BookCard({ book, index }: BookCardProps) {
   const handleCheckout = () => {
     window.location.href = book.checkoutUrl;
   };
+
+  const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
 
   return (
     <motion.article
@@ -42,8 +44,8 @@ export function BookCard({ book, index }: BookCardProps) {
       {/* Cover */}
       <div className="relative w-full aspect-[3/4] bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/[0.06] mb-6 flex items-center justify-center overflow-hidden">
         <img 
-          src={book.imageUrl} 
-          alt={book.title}
+          src={imageUrl} 
+          alt={book.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Subtle category watermark */}
@@ -58,7 +60,7 @@ export function BookCard({ book, index }: BookCardProps) {
         {book.category}
       </p>
       <h3 className="[font-family:'Playfair_Display',serif] text-[18px] font-bold leading-[1.25] mb-4">
-        {book.title}
+        {book.name}
       </h3>
 
       <div className="flex items-center justify-between mb-5">
