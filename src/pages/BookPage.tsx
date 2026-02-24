@@ -322,7 +322,7 @@ export function BookPage() {
                 </span>
 
                 <motion.a
-                  href={book.checkoutUrl || "#"} {/* Use book.checkoutUrl if available */}
+                  href={book.checkoutUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.03, y: -1 }}
