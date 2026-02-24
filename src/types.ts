@@ -34,3 +34,13 @@ export interface Stat {
   value: string;
   label: string;
 }
+
+export interface Profile {
+  id: string; // UUID from auth.users.id
+  name: string;
+  email: string;
+  slug: string;
+  extra_info?: Record<string, unknown>; // JSONB type, can be any JSON object
+  created_at: string;
+  updated_at: string;
+}
