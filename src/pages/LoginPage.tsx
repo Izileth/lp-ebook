@@ -1,39 +1,43 @@
 // src/pages/LoginPage.tsx
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthForm } from '../components/auth/AuthForm';
 import { useAuth } from '../hooks/useAuth';
-import { useAdmin } from '../hooks/useAdmin'; // Import useAdmin
+import { useAdmin } from '../hooks/useAdmin';
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
-  const { isAdmin, loading: adminLoading } = useAdmin(); // Use useAdmin
+  const { user, loading: authInitialLoading } = useAuth(); // Renamed to avoid confusion
+  const { isAdmin, loading: adminInitialLoading } = useAdmin(); // Renamed to avoid confusion
 
+  // This useEffect handles redirection *after* authentication status is known
   useEffect(() => {
-    // Only proceed if both auth and admin status are loaded and user is present
-    if (!authLoading && user && !adminLoading) {
-      if (isAdmin) {
-        navigate('/admin'); // Admin to dashboard
-      } else {
-        navigate('/'); // Regular user to home
+    // Only proceed if both auth and admin status have completed their initial checks
+    if (!authInitialLoading && !adminInitialLoading) {
+      if (user) { // User is authenticated
+        if (isAdmin) {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       }
     }
-  }, [user, authLoading, isAdmin, adminLoading, navigate]); // Add isAdmin and adminLoading to dependencies
+  }, [user, authInitialLoading, isAdmin, adminInitialLoading, navigate]);
 
-  // This function is called by AuthForm *only* on successful login (not sign-up)
-  // We rely on the useEffect for redirection after login.
-  // The useEffect will trigger when user and adminLoading states are updated.
-  const handleAuthSuccess = () => {
-    // No direct navigation here. useEffect will handle it.
-  }
-
-  // If we are still loading authentication or admin status, show a loading indicator
-  if (authLoading || adminLoading) {
+  // If initial authentication status is loading, wait before rendering the form.
+  if (authInitialLoading) {
     return <div>Loading authentication status...</div>;
   }
 
+  // If authInitialLoading is false and a user exists, and admin status is still loading,
+  // show a specific loading message for admin status.
+  if (user && adminInitialLoading) {
+    return <div>Loading admin status for redirection...</div>;
+  }
+
+  // In all other cases (no user, or user exists and all statuses loaded), render the AuthForm.
+  // Redirection is handled by useEffect.
   return (
-    <AuthForm onSuccess={handleAuthSuccess} />
+    <AuthForm onSuccess={() => {}} />
   );
 }

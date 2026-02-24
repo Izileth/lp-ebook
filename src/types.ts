@@ -9,12 +9,12 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  price: string;
+  price: number;
   category: string;
   badge: string | null;
   pages: string;
   product_images: ProductImage[];
-  checkoutUrl: string; // Assuming this is still needed
+  checkoutUrl?: string;
 }
 
 

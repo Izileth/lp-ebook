@@ -2,7 +2,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { BOOKS } from "../constants";
+import { useProduct } from "../hooks/useProduct"; // Import the new hook
 import { IconArrowLeft, IconArrowRight, IconBook, IconShield, IconMail, IconStar } from "../components/Icons";
 
 // ─── Motion Variants ──────────────────────────────────────────────────────────
@@ -111,9 +111,17 @@ function TrustBadge({ icon, label }: TrustBadgeProps) {
 
 export function BookPage() {
   const { bookId } = useParams<{ bookId: string }>();
-  const book = BOOKS.find((b) => b.id === Number(bookId));
+  const { product: book, loading, error } = useProduct(bookId); // Use the new hook
 
+  if (loading) return <div>Loading book details...</div>;
+  if (error) return <div>Error loading book: {error}</div>;
   if (!book) return <NotFound />;
+
+  // Extract imageUrl from product_images, use first one if available
+  const imageUrl = book.product_images?.[0]?.image_url;
+
+  // Format price for display
+  const formattedPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(book.price);
 
   return (
     <>
@@ -198,10 +206,10 @@ export function BookPage() {
 
               {/* Image frame */}
               <div className="relative aspect-[3/4] w-full max-w-sm mx-auto border border-white/[0.08] overflow-hidden">
-                {book.imageUrl ? (
+                {imageUrl ? (
                   <img
-                    src={book.imageUrl}
-                    alt={book.title}
+                    src={imageUrl}
+                    alt={book.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -258,7 +266,7 @@ export function BookPage() {
                   fontSize: "clamp(32px,4.5vw,58px)",
                 }}
               >
-                {book.title}
+                {book.name} {/* Changed from book.title to book.name */}
               </motion.h1>
 
               {/* Star rating */}
@@ -310,11 +318,11 @@ export function BookPage() {
                   className="font-bold text-white"
                   style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,3.5vw,44px)" }}
                 >
-                  {book.price}
+                  {formattedPrice} {/* Changed to formattedPrice */}
                 </span>
 
                 <motion.a
-                  href={book.checkoutUrl}
+                  href={book.checkoutUrl || "#"} {/* Use book.checkoutUrl if available */}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.03, y: -1 }}

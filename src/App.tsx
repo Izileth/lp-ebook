@@ -27,7 +27,6 @@ export default function App() {
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap"
       />
-
       <div className="bg-black text-white min-h-screen overflow-x-hidden scroll-smooth">
         <NoiseOverlay />
         <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
@@ -36,8 +35,8 @@ export default function App() {
           <HeroSection />
           <FeaturesStrip />
           <BooksSection />
-          <AboutSection /> {/* New Section */}
-          <ContactSection /> {/* New Section */}
+          <AboutSection /> 
+          <ContactSection />
           <NewsletterSection />
           <CtaSection />
         </main>
