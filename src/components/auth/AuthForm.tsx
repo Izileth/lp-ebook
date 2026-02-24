@@ -11,29 +11,54 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [formError, setFormError] = useState<string | null>(null);
+  const [signUpSuccess, setSignUpSuccess] = useState(false); // New state for sign-up success message
 
   const { signInWithEmail, signUpWithEmail, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
+    setSignUpSuccess(false); // Reset sign-up success message on new submission
 
     if (isSignUp) {
       const { user, error } = await signUpWithEmail(email, password);
       if (error) {
         setFormError(error.message);
       } else if (user) {
-        onSuccess();
+        setSignUpSuccess(true); // Show success message for sign-up
       }
     } else {
       const { user, error } = await signInWithEmail(email, password);
       if (error) {
         setFormError(error.message);
       } else if (user) {
-        onSuccess();
+        onSuccess(); // Redirect only on successful sign-in
       }
     }
   };
+
+  // If sign-up was successful, show a message and prevent further interaction
+  if (signUpSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="p-8 bg-white rounded shadow-md w-full max-w-sm text-center">
+          <h2 className="text-2xl font-bold mb-4">Registration Successful!</h2>
+          <p className="text-gray-700 mb-4">
+            Please check your email inbox (and spam folder) to verify your account.
+          </p>
+          <button
+            onClick={() => {
+              setSignUpSuccess(false);
+              setIsSignUp(false); // Switch to login view after successful sign-up
+            }}
+            className="w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
