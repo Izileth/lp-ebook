@@ -18,7 +18,9 @@ export function BookCard({ book, index }: BookCardProps) {
   };
 
   const handleCheckout = () => {
-    window.location.href = book.checkoutUrl;
+    if (book.checkoutUrl) {
+      window.location.href = book.checkoutUrl;
+    }
   };
 
   const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
