@@ -4,13 +4,18 @@ import { useEffect, useState } from "react";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { IconBook, IconArrowRight } from "./Icons";
 import { BookCard } from "./BookCard";
-import { supabase } from "../lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 import type { Book } from "../types";
 
 export function BooksSection() {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL || "https://wnotjxleeltjysdlplkc.supabase.co",
+    import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_RMwjLRavgSgRELMsoYINtg_l4AldW2o"
+  );
 
   useEffect(() => {
     async function fetchBooks() {
