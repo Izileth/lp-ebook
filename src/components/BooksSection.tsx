@@ -14,6 +14,12 @@ export function BooksSection() {
 
   useEffect(() => {
     async function fetchBooks() {
+      if (!supabase) {
+        setError("O catálogo de livros não está disponível no momento.");
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase.from("books").select("*");
 
       if (error) {
