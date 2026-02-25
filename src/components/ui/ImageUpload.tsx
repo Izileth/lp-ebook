@@ -1,5 +1,5 @@
 // src/components/ui/ImageUpload.tsx
-import { useState, useCallback, useRef} from "react";
+import { useState, useCallback, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -16,23 +16,23 @@ import {
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ImageUploadProps {
-  onUpload:       (urls: string[]) => void;
+  onUpload: (urls: string[]) => void;
   initialImages?: string[];
-  maxImages?:     number;
+  maxImages?: number;
 }
 
 interface UploadState {
   uploading: boolean;
-  progress:  number; // 0-100 across all files in batch
-  error:     string | null;
-  success:   boolean;
+  progress: number; // 0-100 across all files in batch
+  error: string | null;
+  success: boolean;
 }
 
 const INITIAL_UPLOAD_STATE: UploadState = {
   uploading: false,
-  progress:  0,
-  error:     null,
-  success:   false,
+  progress: 0,
+  error: null,
+  success: false,
 };
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -41,15 +41,15 @@ const MAX_FILE_SIZE_MB = 5;
 // ─── Motion Variants ──────────────────────────────────────────────────────────
 
 const gridItem: Variants = {
-  hidden:  { opacity: 0, scale: 0.88 },
+  hidden: { opacity: 0, scale: 0.88 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
-  exit:    { opacity: 0, scale: 0.88, transition: { duration: 0.2 } },
+  exit: { opacity: 0, scale: 0.88, transition: { duration: 0.2 } },
 };
 
 const bannerVariants: Variants = {
-  hidden:  { opacity: 0, height: 0 },
+  hidden: { opacity: 0, height: 0 },
   visible: { opacity: 1, height: "auto", transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } },
-  exit:    { opacity: 0, height: 0,      transition: { duration: 0.2 } },
+  exit: { opacity: 0, height: 0, transition: { duration: 0.2 } },
 };
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -73,8 +73,8 @@ function generateFilePath(file: File): string {
 // ─── ImageThumb ───────────────────────────────────────────────────────────────
 
 interface ImageThumbProps {
-  url:      string;
-  index:    number;
+  url: string;
+  index: number;
   onRemove: (i: number) => void;
 }
 
@@ -121,14 +121,14 @@ function ImageThumb({ url, index, onRemove }: ImageThumbProps) {
 // ─── DropZone ─────────────────────────────────────────────────────────────────
 
 interface DropZoneProps {
-  uploading:  boolean;
-  progress:   number;
-  dragging:   boolean;
-  onFile:     () => void;
-  inputRef:   React.RefObject<HTMLInputElement>;
-  onDragOver: (e: DragEvent<HTMLDivElement>) => void;
+  uploading: boolean;
+  progress: number;
+  dragging: boolean;
+  onFile: () => void;
+  inputRef: React.RefObject<HTMLInputElement | null>;
+  onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragLeave: () => void;
-  onDrop:     (e: DragEvent<HTMLDivElement>) => void;
+  onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 function DropZone({
@@ -190,13 +190,13 @@ export function ImageUpload({
   initialImages = [],
   maxImages = 5,
 }: ImageUploadProps) {
-  const [images,      setImages]      = useState<string[]>(initialImages);
+  const [images, setImages] = useState<string[]>(initialImages);
   const [uploadState, setUploadState] = useState<UploadState>(INITIAL_UPLOAD_STATE);
-  const [dragging,    setDragging]    = useState(false);
+  const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const canAddMore = images.length < maxImages;
-  const remaining  = maxImages - images.length;
+  const remaining = maxImages - images.length;
 
   // ── Remove image ──────────────────────────────────────────────────────────
   const removeImage = useCallback(
@@ -244,7 +244,7 @@ export function ImageUpload({
 
       try {
         for (let i = 0; i < total; i++) {
-          const file     = fileArray[i];
+          const file = fileArray[i];
           const filePath = generateFilePath(file);
 
           const { error: uploadError } = await supabase.storage
@@ -297,7 +297,7 @@ export function ImageUpload({
   );
 
   // ── Drag handlers ─────────────────────────────────────────────────────────
-  const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragging(true);
   }, []);
@@ -305,7 +305,7 @@ export function ImageUpload({
   const handleDragLeave = useCallback(() => setDragging(false), []);
 
   const handleDrop = useCallback(
-    (e: DragEvent<HTMLDivElement>) => {
+    (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
       setDragging(false);
       if (e.dataTransfer.files) uploadFiles(e.dataTransfer.files);

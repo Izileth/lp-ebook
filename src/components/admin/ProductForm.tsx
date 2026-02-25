@@ -224,8 +224,9 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
 
       if (isEditing && product) {
         // Exclude image_urls from update payload (managed separately)
-        const { image_urls: _, ...updateData } = productData;
+        const { image_urls: _,   ...updateData } = productData;
         result = await updateProduct(product.id, updateData);
+        console.log("Update result:", _, updateData, result);
       } else {
         result = await createProduct(productData);
       }
