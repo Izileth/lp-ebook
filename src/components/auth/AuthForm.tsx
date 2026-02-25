@@ -13,6 +13,7 @@ import {
   IconLoader,
   IconEye,
   IconX,
+  IconUser,
 } from "../Icons";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -104,6 +105,7 @@ function InputField({
 
 export function AuthForm({ onSuccess }: AuthFormProps) {
   const [mode, setMode]                 = useState<Mode>("login");
+  const [name, setName]                 = useState("");
   const [email, setEmail]               = useState("");
   const [password, setPassword]         = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -120,7 +122,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
     setSignUpSuccess(false);
 
     if (isSignUp) {
-      const { user, error } = await signUpWithEmail(email, password);
+      const { user, error } = await signUpWithEmail(email, password, name);
       if (error) setFormError(error.message);
       else if (user) setSignUpSuccess(true);
     } else {
@@ -191,15 +193,15 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                   className="[font-family:'Playfair_Display',serif] font-bold leading-[1.1]"
                   style={{ fontSize: "clamp(22px,3vw,30px)" }}
                 >
-                  Verifique seu
+                  Bem-vindo ao
                   <br />
-                  <em className="not-italic text-white/65">e-mail.</em>
+                  <em className="not-italic text-white/65">FOCUS.</em>
                 </h2>
               </div>
 
               <p className="font-sans font-light text-[13px] leading-[1.7] text-white/45 max-w-[280px]">
-                Enviamos um link de confirmação para <strong className="text-white/70 font-normal">{email}</strong>.
-                Verifique sua caixa de entrada e a pasta de spam.
+                Sua conta foi criada com sucesso para <strong className="text-white/70 font-normal">{email}</strong>.
+                Você já pode acessar todos os conteúdos.
               </p>
 
               <motion.button
@@ -265,6 +267,18 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
 
                 {/* Fields */}
                 <div className="flex flex-col gap-4">
+                  {isSignUp && (
+                    <InputField
+                      id="name"
+                      type="text"
+                      label="Nome Completo"
+                      placeholder="Como deseja ser chamado?"
+                      value={name}
+                      icon={<IconUser size={15} />}
+                      onChange={setName}
+                      required
+                    />
+                  )}
                   <InputField
                     id="email"
                     type="email"
@@ -366,6 +380,7 @@ export function AuthForm({ onSuccess }: AuthFormProps) {
                 aria-hidden="true"
                 tabIndex={-1}
               >
+                {isSignUp && <input type="text" value={name} readOnly />}
                 <input type="email"    value={email}    readOnly />
                 <input type="password" value={password} readOnly />
                 <button type="submit" />

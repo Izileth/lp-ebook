@@ -40,6 +40,7 @@ export interface Profile {
   name: string;
   email: string;
   slug: string;
+  bio?: string; // New field for user bio
   extra_info?: Record<string, unknown>; // JSONB type, can be any JSON object
   created_at: string;
   updated_at: string;

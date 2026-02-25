@@ -10,6 +10,7 @@ interface UserProfileContextType {
   loading: boolean;
   error: string | null;
   refetchProfile: () => void; // Function to manually refetch profile
+  updateProfile: (updates: Partial<Profile>) => Promise<{ data: Profile | null; error: Error | null }>;
 }
 
 const UserProfileContext = createContext<UserProfileContextType | undefined>(undefined);
@@ -57,8 +58,28 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
     fetchProfile();
   };
 
+  const updateProfile = async (updates: Partial<Profile>) => {
+    if (!user) return { data: null, error: new Error('User not authenticated') };
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({
+        ...updates,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', user.id)
+      .select()
+      .single();
+
+    if (!error) {
+      setProfile(data as Profile);
+    }
+
+    return { data, error };
+  };
+
   return (
-    <UserProfileContext.Provider value={{ profile, loading, error, refetchProfile }}>
+    <UserProfileContext.Provider value={{ profile, loading, error, refetchProfile, updateProfile }}>
       {children}
     </UserProfileContext.Provider>
   );

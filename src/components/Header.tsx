@@ -1,9 +1,13 @@
 // src/components/Header.tsx
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { NAV_LINKS } from "../constants";
-import { IconMenu, IconArrowRight } from "./Icons";
+import { IconMenu, IconArrowRight, IconUser } from "./Icons";
+import { useAuth } from "../hooks/useAuth";
+import { useUserProfile } from "../hooks/useUserProfile";
 import Logo from '../../src/assets/favicons.png'
+
 interface HeaderProps {
   menuOpen: boolean;
   setMenuOpen: (open: boolean) => void;
@@ -11,12 +15,20 @@ interface HeaderProps {
 
 export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
   const [scrolled, setScrolled] = useState<boolean>(false);
+  const { user } = useAuth();
+  const { profile } = useUserProfile();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  const getInitial = () => {
+    if (profile?.name) return profile.name.charAt(0).toUpperCase();
+    if (user?.email) return user.email.charAt(0).toUpperCase();
+    return <IconUser size={14} />;
+  };
 
   return (
     <motion.header
@@ -32,7 +44,7 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
       ].join(" ")}
     >
       {/* Logo */}
-      <div className="flex items-baseline gap-2">
+      <Link to="/" className="flex items-baseline gap-2 no-underline text-white">
         <span className="[font-family:'Playfair_Display',serif] text-xl font-bold tracking-[0.02em] flex items-center">
           F
           <img
@@ -46,7 +58,7 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
         <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/30">
           | Conhecimento
         </span>
-      </div>
+      </Link>
 
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-10">
@@ -57,26 +69,46 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
             className="font-sans text-[13px] tracking-[0.12em] uppercase text-white/55 no-underline hover:text-white transition-colors duration-200"
           >
             {item}
-          </a>))}
-        <motion.a
-          href="#livros"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-5 py-2.5 flex items-center gap-2 hover:bg-white/85 transition-colors"
-        >
-          Explorar <IconArrowRight />
-        </motion.a>
+          </a>
+        ))}
+
+        {user ? (
+          <Link
+            to="/profile"
+            className="flex items-center gap-3 group no-underline"
+          >
+            <div className="w-8 h-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-[11px] font-bold text-white/70 group-hover:border-white/30 group-hover:bg-white/10 transition-all">
+              {getInitial()}
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-5 py-2.5 flex items-center gap-2 hover:bg-white/85 transition-colors no-underline"
+          >
+            Acessar <IconArrowRight size={14} />
+          </Link>
+        )}
       </nav>
 
       {/* Hamburger */}
-      <button
-        aria-label="Abrir menu"
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen(true)}
-        className="md:hidden text-white bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity"
-      >
-        <IconMenu />
-      </button>
+      <div className="flex items-center gap-4 md:hidden">
+        {user && (
+          <Link to="/profile" className="no-underline">
+            <div className="w-8 h-8 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-[11px] font-bold text-white/70">
+              {getInitial()}
+            </div>
+          </Link>
+        )}
+        <button
+          aria-label="Abrir menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(true)}
+          className="text-white bg-transparent border-none cursor-pointer hover:opacity-70 transition-opacity"
+        >
+          <IconMenu />
+        </button>
+      </div>
     </motion.header>
   );
 }

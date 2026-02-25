@@ -9,7 +9,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithEmail: (email: string, password: string) => Promise<{ user: User | null; error: Error | null }>;
-  signUpWithEmail: (email: string, password: string) => Promise<{ user: User | null; error: Error | null }>;
+  signUpWithEmail: (email: string, password: string, fullName?: string) => Promise<{ user: User | null; error: Error | null }>;
   signOut: () => Promise<{ error: Error | null }>;
 }
 
@@ -52,9 +52,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   // Function to handle user sign-up with email and password
-  const signUpWithEmail = async (email: string, password: string) => {
+  const signUpWithEmail = async (email: string, password: string, fullName?: string) => {
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+        },
+      },
+    });
     setLoading(false);
     setUser(data.user); // Update user state after sign-up attempt
     return { user: data.user, error };
