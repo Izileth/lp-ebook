@@ -6,7 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useAdmin } from '../hooks/useAdmin';
 import { Header } from '../components/Header';
 import { MobileMenu } from '../components/MobileMenu';
-
+import { LoadingState } from '../components/ui/StatesScreens';
 export function LoginPage() {
   const navigate = useNavigate();
   const { user, loading: authInitialLoading } = useAuth(); // Renamed to avoid confusion
@@ -29,13 +29,13 @@ export function LoginPage() {
 
   // If initial authentication status is loading, wait before rendering the form.
   if (authInitialLoading) {
-    return <div>Loading authentication status...</div>;
+    return <LoadingState message="Verificando autenticação..." />;
   }
 
   // If authInitialLoading is false and a user exists, and admin status is still loading,
   // show a specific loading message for admin status.
   if (user && adminInitialLoading) {
-    return <div>Loading admin status for redirection...</div>;
+    return <LoadingState message="Verificando permissões de administrador..." />;
   }
 
   // In all other cases (no user, or user exists and all statuses loaded), render the AuthForm.
