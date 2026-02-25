@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../types";
 import { cardVariants } from "../motionVariants";
-import { IconBook, IconArrowRight } from "./Icons";
+import { IconBook, IconArrowRight, IconShield, IconStar } from "./Icons";
 
 interface BookCardProps {
   book: Product;
@@ -18,12 +18,14 @@ export function BookCard({ book, index }: BookCardProps) {
   };
 
   const handleCheckout = () => {
-    if (book.checkoutUrl) {
-      window.location.href = book.checkoutUrl;
+    if (book.checkout_url) {
+      window.location.href = book.checkout_url;
     }
   };
 
   const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
+
+  const hasDiscount = book.discount_price && book.discount_price > 0 && book.discount_price < book.price;
 
   return (
     <motion.article
@@ -50,10 +52,15 @@ export function BookCard({ book, index }: BookCardProps) {
           alt={book.name}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        {/* Subtle category watermark */}
-        <span className="absolute bottom-4 left-4 font-sans text-[9px] tracking-[0.2em] uppercase text-white/40 bg-black/40 px-2 py-0.5 backdrop-blur-sm">
-          {book.category}
-        </span>
+        {/* Subtle category watermark + Rating */}
+        <div className="absolute bottom-4 left-4 z-50 flex items-center gap-2">
+          <span className="font-sans text-[9px] tracking-[0.2em] uppercase text-white/40 bg-black/40 px-2 py-0.5 backdrop-blur-sm">
+            {book.category}
+          </span>
+          <span className="font-sans text-[9px] tracking-[0.1em] text-white/60 bg-black/40 px-2 py-0.5 backdrop-blur-sm flex items-center gap-1">
+          <IconStar size={10} /> {book.rating}
+          </span>
+        </div>
         <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
       </div>
 
@@ -66,8 +73,17 @@ export function BookCard({ book, index }: BookCardProps) {
       </h3>
 
       <div className="flex items-center justify-between mb-5">
-        <span className="font-sans text-[11px] text-white/35 tracking-wide">{book.pages}</span>
-        <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">R${book.price}</span>
+        <span className="font-sans text-[11px] text-white/35 tracking-wide">{book.pages} páginas</span>
+        <div className="flex flex-col items-end">
+          {hasDiscount ? (
+            <>
+              <span className="font-sans text-[10px] text-white/20 line-through">R${book.price}</span>
+              <span className="[font-family:'Playfair_Display',serif] text-lg font-bold text-white">R${book.discount_price}</span>
+            </>
+          ) : (
+            <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">R${book.price}</span>
+          )}
+        </div>
       </div>
 
       <motion.button

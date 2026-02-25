@@ -11,10 +11,17 @@ export function useCreateProduct() {
     name: string;
     description: string;
     price: number;
+    discount_price?: number;
+    slug?: string;
+    language: string;
+    rating: number;
     category: string;
     badge: string;
     pages: string;
     image_urls: string[];
+    checkout_url?: string;
+    access_url?: string;
+    share_url?: string;
   }) => {
     setLoading(true);
     setError(null);
@@ -47,10 +54,17 @@ export function useUpdateProduct() {
     name: string;
     description: string;
     price: number;
+    discount_price: number;
+    slug: string;
+    language: string;
+    rating: number;
     category: string;
     badge: string;
     pages: string;
     image_urls: string[];
+    checkout_url: string;
+    access_url: string;
+    share_url: string;
   }>) => {
     setLoading(true);
     setError(null);

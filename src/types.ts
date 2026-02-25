@@ -10,11 +10,17 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  discount_price?: number;
+  slug: string;
+  language: string;
+  rating: number;
   category: string;
   badge: string | null;
   pages: string;
   product_images: ProductImage[];
-  checkoutUrl?: string;
+  checkout_url?: string;
+  access_url?: string;
+  share_url?: string;
 }
 
 

@@ -7,7 +7,7 @@ import { IconArrowLeft, IconArrowRight, IconBook, IconShield, IconMail, IconStar
 import { Header } from "../components/Header";
 import { MobileMenu } from "../components/MobileMenu";
 import { NoiseOverlay } from "../components/NoiseOverlay";
-
+import { IconShare } from "../components/Icons";
 // ─── Motion Variants ──────────────────────────────────────────────────────────
 
 const fadeUpVariants: Variants = {
@@ -125,7 +125,11 @@ export function BookPage() {
   const imageUrl = book.product_images?.[0]?.image_url;
 
   // Format price for display
+  const hasDiscount = book.discount_price && book.discount_price > 0 && book.discount_price < book.price;
   const formattedPrice = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(book.price);
+  const formattedDiscountPrice = book.discount_price 
+    ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(book.discount_price)
+    : null;
 
   return (
     <>
@@ -150,7 +154,7 @@ export function BookPage() {
 
         {/* ── Main ────────────────────────────────────────────────────────── */}
         <main className="max-w-[1200px] mx-auto px-8 md:px-16 py-16 md:py-24">
-          <div className="mb-12">
+          <div className="mb-12 flex items-center justify-between">
             <Link
               to="/"
               className="group inline-flex items-center gap-2 font-sans text-[12px] tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors duration-200"
@@ -160,6 +164,27 @@ export function BookPage() {
               </span>
               Voltar para a loja
             </Link>
+
+            {book.share_url && (
+              <button 
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: book.name,
+                      text: book.description,
+                      url: book.share_url
+                    });
+                  } else {
+                    navigator.clipboard.writeText(book.share_url || "");
+                    alert("Link de compartilhamento copiado!");
+                  }
+                }}
+                className="inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors duration-200"
+              >
+                <IconShare size={14} />
+                Compartilhar
+              </button>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
 
@@ -244,7 +269,7 @@ export function BookPage() {
                   fontSize: "clamp(32px,4.5vw,58px)",
                 }}
               >
-                {book.name} {/* Changed from book.title to book.name */}
+                {book.name}
               </motion.h1>
 
               {/* Star rating */}
@@ -255,11 +280,11 @@ export function BookPage() {
               >
                 <div className="flex gap-0.5 text-white/70">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <IconStar key={i} />
+                    <IconStar key={i} className={i < Math.floor(book.rating) ? "text-white/70" : "text-white/20"} />
                   ))}
                 </div>
                 <span className="font-sans text-[11px] text-white/35 tracking-wide">
-                  4.9 · 127 avaliações
+                  {book.rating} · Verificado
                 </span>
               </motion.div>
 
@@ -281,7 +306,7 @@ export function BookPage() {
                 className="flex items-stretch divide-x divide-white/[0.08] border border-white/[0.08] mb-8"
               >
                 <StatItem label="Páginas" value={book.pages ?? "–"} />
-                <StatItem label="Idioma" value="Português" />
+                <StatItem label="Idioma" value={book.language} />
                 <StatItem label="Formato" value="Digital" />
                 <StatItem label="Entrega" value="Imediata" />
               </motion.div>
@@ -292,24 +317,42 @@ export function BookPage() {
                 custom={0.25}
                 className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8"
               >
-                <span
-                  className="font-bold text-white"
-                  style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,3.5vw,44px)" }}
-                >
-                  {formattedPrice} {/* Changed to formattedPrice */}
-                </span>
+                <div className="flex flex-col">
+                  {hasDiscount && (
+                    <span className="font-sans text-[14px] text-white/30 line-through mb-1">
+                      {formattedPrice}
+                    </span>
+                  )}
+                  <span
+                    className="font-bold text-white"
+                    style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,3.5vw,44px)" }}
+                  >
+                    {hasDiscount ? formattedDiscountPrice : formattedPrice}
+                  </span>
+                </div>
 
-                <motion.a
-                  href={book.checkoutUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.03, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full sm:w-auto bg-white text-black font-sans text-[13px] font-medium tracking-[0.1em] uppercase py-4 px-8 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200"
-                >
-                  Adquirir Agora
-                  <IconArrowRight />
-                </motion.a>
+                <div className="flex flex-col gap-2 w-full sm:w-auto">
+                  <motion.a
+                    href={book.checkout_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.03, y: -1 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full sm:w-auto bg-white text-black font-sans text-[13px] font-medium tracking-[0.1em] uppercase py-4 px-8 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200"
+                  >
+                    Adquirir Agora
+                    <IconArrowRight />
+                  </motion.a>
+                  
+                  {book.access_url && (
+                    <Link
+                      to={book.access_url}
+                      className="font-sans text-[11px] tracking-[0.1em] uppercase text-white/40 hover:text-white transition-colors text-center"
+                    >
+                      Já possui? Acessar agora
+                    </Link>
+                  )}
+                </div>
               </motion.div>
 
               {/* Trust badges */}

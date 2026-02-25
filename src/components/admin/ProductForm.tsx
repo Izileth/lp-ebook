@@ -28,10 +28,17 @@ interface FormData {
   name: string;
   description: string;
   price: number;
+  discount_price: number;
+  slug: string;
+  language: string;
+  rating: number;
   category: string;
   badge: string;
   pages: string;
   image_urls: string[];
+  checkout_url: string;
+  access_url: string;
+  share_url: string;
 }
 
 type SubmitStatus = "idle" | "loading" | "success" | "error";
@@ -43,12 +50,19 @@ function buildInitialFormData(product?: Product): FormData {
     name: product?.name ?? "",
     description: product?.description ?? "",
     price: product?.price ?? 0,
+    discount_price: product?.discount_price ?? 0,
+    slug: product?.slug ?? "",
+    language: product?.language ?? "Português",
+    rating: product?.rating ?? 5.0,
     category: product?.category ?? "",
     badge: product?.badge ?? "",
     pages: product?.pages ?? "",
     image_urls: product
       ? product.product_images.map((img) => img.image_url)
       : [],
+    checkout_url: product?.checkout_url ?? "",
+    access_url: product?.access_url ?? "",
+    share_url: product?.share_url ?? "",
   };
 }
 
@@ -218,6 +232,8 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       const productData: FormData = {
         ...formData,
         price: Number(formData.price),
+        discount_price: Number(formData.discount_price),
+        rating: Number(formData.rating),
       };
 
       let result: { error?: { message: string } | null } | null | undefined;
@@ -293,12 +309,109 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
               />
             </Field>
 
-            {/* Price + Category */}
+            {/* Price + Discount Price */}
             <div className="grid grid-cols-2 gap-4">
               <PriceField
                 value={formData.price}
                 onChange={handlePriceChange}
               />
+              <motion.div variants={fadeUp} className="flex flex-col gap-2">
+                <label className="font-sans text-[10px] tracking-[0.22em] uppercase text-white/40 font-medium">
+                  Preço com Desconto
+                </label>
+                <div className="relative flex items-center border border-white/[0.1] transition-[border-color] duration-200 focus-within:border-white/30">
+                  <span className="absolute left-4 font-sans text-[12px] text-white/30 pointer-events-none select-none">
+                    R$
+                  </span>
+                  <input
+                    type="number"
+                    name="discount_price"
+                    value={formData.discount_price}
+                    step="0.01"
+                    min="0"
+                    onChange={(e) => setFormData(prev => ({ ...prev, discount_price: Number(e.target.value) }))}
+                    className="w-full bg-transparent py-4 pl-10 pr-4 font-sans text-[13px] text-white outline-none tabular-nums"
+                  />
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Slug + Language */}
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Slug" icon={<IconTag size={12} />} hint="Opcional. Auto-gerado se vazio.">
+                <input
+                  name="slug"
+                  value={formData.slug}
+                  onChange={handleChange}
+                  placeholder="guia-design"
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+              <Field label="Idioma" icon={<IconBook size={12} />} required>
+                <input
+                  name="language"
+                  value={formData.language}
+                  onChange={handleChange}
+                  placeholder="Português"
+                  required
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+            </div>
+
+            {/* Links Section */}
+            <motion.div variants={fadeUp} className="mt-2">
+              <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-white/25 border-l-2 border-white/15 pl-3">
+                Links do Produto
+              </span>
+            </motion.div>
+
+            <Field label="Link de Checkout (Compra)" icon={<IconArrowRight size={12} />}>
+              <input
+                name="checkout_url"
+                value={formData.checkout_url}
+                onChange={handleChange}
+                placeholder="https://pay.hotmart.com/..."
+                className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+              />
+            </Field>
+
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Link de Acesso">
+                <input
+                  name="access_url"
+                  value={formData.access_url}
+                  onChange={handleChange}
+                  placeholder="https://area-membros.com/..."
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+              <Field label="Link de Compartilhamento">
+                <input
+                  name="share_url"
+                  value={formData.share_url}
+                  onChange={handleChange}
+                  placeholder="https://lp-ebook.com/p/guia"
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+            </div>
+
+            {/* Rating + Category */}
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Avaliação" required>
+                <input
+                  type="number"
+                  name="rating"
+                  value={formData.rating}
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  onChange={(e) => setFormData(prev => ({ ...prev, rating: Number(e.target.value) }))}
+                  required
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
               <Field label="Categoria" icon={<IconBook size={12} />} required>
                 <input
                   name="category"
