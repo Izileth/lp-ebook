@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import type { Product } from "../types";
 import { cardVariants } from "../motionVariants";
-import { IconBook, IconArrowRight, IconShield, IconStar } from "./Icons";
+import { IconBook, IconArrowRight, IconStar } from "./Icons";
 
 interface BookCardProps {
   book: Product;
