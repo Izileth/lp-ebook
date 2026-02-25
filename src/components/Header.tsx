@@ -6,6 +6,7 @@ import { NAV_LINKS } from "../constants";
 import { IconMenu, IconArrowRight, IconUser } from "./Icons";
 import { useAuth } from "../hooks/useAuth";
 import { useUserProfile } from "../hooks/useUserProfile";
+import { useAdmin } from "../hooks/useAdmin";
 import Logo from '../../src/assets/favicons.png'
 
 interface HeaderProps {
@@ -17,6 +18,7 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const { user } = useAuth();
   const { profile } = useUserProfile();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -62,6 +64,14 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex items-center gap-10">
+        {isAdmin && (
+          <Link
+            to="/admin"
+            className="font-sans text-[11px] tracking-[0.15em] uppercase text-emerald-400/90 no-underline hover:text-emerald-300 transition-colors duration-200 border border-emerald-400/20 px-3 py-1.5 bg-emerald-400/5 rounded-sm"
+          >
+            Painel Admin
+          </Link>
+        )}
         {NAV_LINKS.map((item) => (
           <a
             key={item}

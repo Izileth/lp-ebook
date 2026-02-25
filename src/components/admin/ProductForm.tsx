@@ -1,170 +1,419 @@
 // src/components/admin/ProductForm.tsx
-import { useState } from 'react';
-import { useCreateProduct, useUpdateProduct } from '../../hooks/useProductMutations';
-import type { Product } from '../../types';
+import { useState, useCallback } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
+import { useCreateProduct, useUpdateProduct } from "../../hooks/useProductMutations";
+import { ImageUpload } from "../ui/ImageUpload";
+import {
+  IconLoader,
+  IconArrowRight,
+  IconAlertCircle,
+  IconCheck,
+  IconFileText,
+  IconTag,
+  IconBook,
+  IconX,
+} from "../Icons";
+import type { Product } from "../../types";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ProductFormProps {
   product?: Product;
   onSuccess: () => void;
 }
 
-function buildInitialFormData(product?: Product) {
+interface FormData {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  badge: string;
+  pages: string;
+  image_urls: string[];
+}
+
+type SubmitStatus = "idle" | "loading" | "success" | "error";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function buildInitialFormData(product?: Product): FormData {
   return {
-    name: product?.name ?? '',
-    description: product?.description ?? '',
+    name: product?.name ?? "",
+    description: product?.description ?? "",
     price: product?.price ?? 0,
-    category: product?.category ?? '',
-    badge: product?.badge ?? '',
-    pages: product?.pages ?? '',
+    category: product?.category ?? "",
+    badge: product?.badge ?? "",
+    pages: product?.pages ?? "",
     image_urls: product
-      ? product.product_images.map(img => img.image_url).join('\n')
-      : '',
+      ? product.product_images.map((img) => img.image_url)
+      : [],
   };
 }
 
-export function ProductForm({ product, onSuccess }: ProductFormProps) {
-  // 🔐 state inicial derivado da prop (sem effect)
-  const [formData, setFormData] = useState(() => buildInitialFormData(product));
+// ─── Motion Variants ──────────────────────────────────────────────────────────
 
-  const { createProduct, loading: createLoading, error: createError } = useCreateProduct();
-  const { updateProduct, loading: updateLoading, error: updateError } = useUpdateProduct();
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+};
 
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'price' ? Number(value) : value,
-    }));
-  };
+const bannerVariants: Variants = {
+  hidden: { opacity: 0, height: 0, y: -6 },
+  visible: { opacity: 1, height: "auto", y: 0, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, height: 0, y: -4, transition: { duration: 0.22 } },
+};
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
-    const imageUrlsArray = formData.image_urls
-      .split('\n')
-      .map(url => url.trim())
-      .filter(Boolean);
+interface FieldProps {
+  label: string;
+  icon?: React.ReactNode;
+  hint?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}
 
-    const productData = {
-      ...formData,
-      price: Number(formData.price),
-      image_urls: imageUrlsArray,
-    };
-
-    let result;
-    if (product) {
-      const { image_urls: _omit, ...updateData } = productData;
-      result = await updateProduct(product.id, updateData);
-    } else {
-      result = await createProduct(productData);
-    }
-
-    if (result && !result.error) {
-      onSuccess();
-    }
-  };
-
-  const loading = createLoading || updateLoading;
-  const error = createError || updateError;
-
+function Field({ label, icon, hint, required, children }: FieldProps) {
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-
-      <div>
-        <label className="block text-sm font-medium">Name</label>
-        <input
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-2 py-1"
-        />
+    <motion.div variants={fadeUp} className="flex flex-col gap-2">
+      <label className="font-sans text-[10px] tracking-[0.22em] uppercase text-white/40 font-medium flex items-center gap-1.5">
+        {icon && <span className="text-white/25">{icon}</span>}
+        {label}
+        {required && <span className="text-white/20 ml-0.5">*</span>}
+      </label>
+      <div className="relative border border-white/[0.1] transition-[border-color] duration-200 focus-within:border-white/30">
+        {children}
       </div>
+      {hint && (
+        <p className="font-sans text-[10px] italic text-white/20 leading-relaxed">{hint}</p>
+      )}
+    </motion.div>
+  );
+}
 
-      <div>
-        <label className="block text-sm font-medium">Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={3}
-          required
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
+// Price field with currency prefix
+interface PriceFieldProps {
+  value: number;
+  onChange: (v: number) => void;
+}
 
-      <div>
-        <label className="block text-sm font-medium">Price</label>
+function PriceField({ value, onChange }: PriceFieldProps) {
+  return (
+    <motion.div variants={fadeUp} className="flex flex-col gap-2">
+      <label className="font-sans text-[10px] tracking-[0.22em] uppercase text-white/40 font-medium">
+        Preço <span className="text-white/20">*</span>
+      </label>
+      <div className="relative flex items-center border border-white/[0.1] transition-[border-color] duration-200 focus-within:border-white/30">
+        <span className="absolute left-4 font-sans text-[12px] text-white/30 pointer-events-none select-none">
+          R$
+        </span>
         <input
           type="number"
           name="price"
-          value={formData.price}
-          onChange={handleChange}
+          value={value}
+          step="0.01"
+          min="0"
           required
-          className="w-full border rounded px-2 py-1"
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="w-full bg-transparent py-4 pl-10 pr-4 font-sans text-[13px] text-white outline-none tabular-nums"
         />
       </div>
+    </motion.div>
+  );
+}
 
-      <div>
-        <label className="block text-sm font-medium">Category</label>
-        <input
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
+// Status banner
+interface BannerProps {
+  status: "success" | "error";
+  message: string;
+  onDismiss?: () => void;
+}
 
-      <div>
-        <label className="block text-sm font-medium">Badge</label>
-        <input
-          name="badge"
-          value={formData.badge}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium">Pages</label>
-        <input
-          name="pages"
-          value={formData.pages}
-          onChange={handleChange}
-          required
-          className="w-full border rounded px-2 py-1"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium">Image URLs (one per line)</label>
-        <textarea
-          name="image_urls"
-          value={formData.image_urls}
-          onChange={handleChange}
-          rows={3}
-          disabled={!!product}
-          className="w-full border rounded px-2 py-1"
-        />
-        {product && (
-          <p className="text-xs text-gray-500">
-            Updating images is not supported via this form.
-          </p>
+function Banner({ status, message, onDismiss }: BannerProps) {
+  const isSuccess = status === "success";
+  return (
+    <motion.div
+      variants={bannerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="overflow-hidden"
+    >
+      <div className="flex items-start gap-3 border border-white/[0.1] px-4 py-3">
+        <span className="text-white/50 mt-0.5 shrink-0">
+          {isSuccess ? <IconCheck size={14} /> : <IconAlertCircle size={14} />}
+        </span>
+        <p className="font-sans text-[12px] leading-[1.55] text-white/55 flex-1">
+          {message}
+        </p>
+        {onDismiss && (
+          <button
+            type="button"
+            onClick={onDismiss}
+            aria-label="Fechar"
+            className="text-white/25 hover:text-white/55 transition-colors shrink-0 mt-0.5"
+          >
+            <IconX size={13} />
+          </button>
         )}
       </div>
+    </motion.div>
+  );
+}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-indigo-600 text-white px-4 py-2 rounded"
+// ─── ProductForm ──────────────────────────────────────────────────────────────
+
+export function ProductForm({ product, onSuccess }: ProductFormProps) {
+  const isEditing = product !== undefined;
+
+  // Stable initial data — only computed once during initial render
+  const [formData, setFormData] = useState<FormData>(() => buildInitialFormData(product));
+
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const { createProduct, loading: createLoading } = useCreateProduct();
+  const { updateProduct, loading: updateLoading } = useUpdateProduct();
+  const loading = createLoading || updateLoading;
+
+  // ── Generic text/textarea field handler ──────────────────────────────────
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    },
+    []
+  );
+
+  // ── Price handler (separate to keep type safety) ──────────────────────────
+  const handlePriceChange = useCallback((v: number) => {
+    setFormData((prev) => ({ ...prev, price: v }));
+  }, []);
+
+  // ── Image upload ──────────────────────────────────────────────────────────
+  const handleImageUpload = useCallback((urls: string[]) => {
+    setFormData((prev) => ({ ...prev, image_urls: urls }));
+  }, []);
+
+  // ── Dismiss banner ────────────────────────────────────────────────────────
+  const dismissBanner = useCallback(() => {
+    setSubmitStatus("idle");
+    setErrorMsg(null);
+  }, []);
+
+  // ── Submit ────────────────────────────────────────────────────────────────
+  const handleSubmit = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      setSubmitStatus("loading");
+      setErrorMsg(null);
+
+      const productData: FormData = {
+        ...formData,
+        price: Number(formData.price),
+      };
+
+      let result: { error?: { message: string } | null } | null | undefined;
+
+      if (isEditing && product) {
+        // Exclude image_urls from update payload (managed separately)
+        const { image_urls: _, ...updateData } = productData;
+        result = await updateProduct(product.id, updateData);
+      } else {
+        result = await createProduct(productData);
+      }
+
+      if (result && result.error) {
+        setErrorMsg(result.error.message);
+        setSubmitStatus("error");
+        return;
+      }
+
+      setSubmitStatus("success");
+      setTimeout(() => {
+        setSubmitStatus("idle");
+        onSuccess();
+      }, 1500);
+    },
+    [formData, isEditing, product, createProduct, updateProduct, onSuccess]
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        animate="visible"
+        className="flex flex-col gap-8"
       >
-        {loading ? 'Saving...' : product ? 'Update Product' : 'Create Product'}
-      </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+          {/* ── Left: Basic Info ──────────────────────────────────────── */}
+          <motion.div variants={stagger} className="flex flex-col gap-6">
+
+            {/* Section eyebrow */}
+            <motion.div variants={fadeUp}>
+              <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-white/25 border-l-2 border-white/15 pl-3">
+                Informações básicas
+              </span>
+            </motion.div>
+
+            {/* Name */}
+            <Field label="Nome do produto" icon={<IconTag size={12} />} required>
+              <input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Ex: Guia Mestre de Design"
+                required
+                className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+              />
+            </Field>
+
+            {/* Description */}
+            <Field label="Descrição" icon={<IconFileText size={12} />} required>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={4}
+                placeholder="Descreva o que torna este ebook especial..."
+                required
+                className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none resize-none leading-relaxed"
+              />
+            </Field>
+
+            {/* Price + Category */}
+            <div className="grid grid-cols-2 gap-4">
+              <PriceField
+                value={formData.price}
+                onChange={handlePriceChange}
+              />
+              <Field label="Categoria" icon={<IconBook size={12} />} required>
+                <input
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  placeholder="Ex: Design"
+                  required
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+            </div>
+
+            {/* Badge + Pages */}
+            <div className="grid grid-cols-2 gap-4">
+              <Field
+                label="Badge / Etiqueta"
+                hint="Opcional. Ex: Best Seller"
+              >
+                <input
+                  name="badge"
+                  value={formData.badge}
+                  onChange={handleChange}
+                  placeholder="Ex: Best Seller"
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+
+              <Field label="Páginas" required>
+                <input
+                  name="pages"
+                  value={formData.pages}
+                  onChange={handleChange}
+                  placeholder="Ex: 128"
+                  required
+                  className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
+                />
+              </Field>
+            </div>
+          </motion.div>
+
+          {/* ── Right: Media ──────────────────────────────────────────── */}
+          <motion.div variants={stagger} className="flex flex-col gap-6">
+            <motion.div variants={fadeUp}>
+              <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-white/25 border-l-2 border-white/15 pl-3">
+                Imagens do produto
+              </span>
+            </motion.div>
+
+            <motion.div variants={fadeUp}>
+              <ImageUpload
+                onUpload={handleImageUpload}
+                initialImages={formData.image_urls}
+                maxImages={5}
+              />
+            </motion.div>
+
+            {isEditing && (
+              <motion.div
+                variants={fadeUp}
+                className="border border-white/[0.07] px-4 py-3"
+              >
+                <p className="font-sans text-[11px] text-white/30 leading-relaxed tracking-wide">
+                  Novas imagens serão associadas ao produto ao salvar.
+                  As imagens existentes permanecem até serem removidas.
+                </p>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+
+        {/* ── Divider ──────────────────────────────────────────────────── */}
+        <motion.div variants={fadeUp} className="h-px bg-white/[0.07]" />
+
+        {/* ── Status banners ────────────────────────────────────────────── */}
+        <AnimatePresence>
+          {submitStatus === "success" && (
+            <Banner
+              key="success"
+              status="success"
+              message={isEditing ? "Produto atualizado com sucesso!" : "Produto criado com sucesso!"}
+            />
+          )}
+          {submitStatus === "error" && errorMsg && (
+            <Banner
+              key="error"
+              status="error"
+              message={errorMsg}
+              onDismiss={dismissBanner}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* ── Submit ───────────────────────────────────────────────────── */}
+        <motion.div variants={fadeUp} className="flex items-center gap-4 flex-wrap">
+          <motion.button
+            type="submit"
+            disabled={loading || submitStatus === "success"}
+            whileHover={loading ? {} : { scale: 1.02, y: -1 }}
+            whileTap={loading ? {} : { scale: 0.97 }}
+            className="bg-white text-black font-sans text-[11px] font-bold tracking-[0.18em] uppercase py-4 px-10 min-w-[200px] flex items-center justify-center gap-2 hover:bg-white/85 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <><IconLoader size={13} /> Processando...</>
+            ) : submitStatus === "success" ? (
+              <><IconCheck size={13} /> Salvo!</>
+            ) : (
+              <>{isEditing ? "Atualizar produto" : "Criar produto"} <IconArrowRight size={13} /></>
+            )}
+          </motion.button>
+
+          {/* Character count hint for description */}
+          <span className="font-sans text-[10px] tracking-wide text-white/20">
+            {formData.description.length} caracteres na descrição
+          </span>
+        </motion.div>
+      </motion.div>
     </form>
   );
 }

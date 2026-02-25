@@ -33,7 +33,7 @@ export function BookCard({ book, index }: BookCardProps) {
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
       whileHover={{ y: -6, borderColor: "rgba(255,255,255,0.28)" }}
-      className="relative border border-white/[0.08] bg-[#0a0a0a] p-8 cursor-pointer group"
+      className="relative border border-white/[0.08] bg-[#000] p-8 cursor-pointer group"
       style={{ transition: "border-color 0.25s" }}
       onClick={handleCardClick}
     >
@@ -67,7 +67,7 @@ export function BookCard({ book, index }: BookCardProps) {
 
       <div className="flex items-center justify-between mb-5">
         <span className="font-sans text-[11px] text-white/35 tracking-wide">{book.pages}</span>
-        <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">{book.price}</span>
+        <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">R${book.price}</span>
       </div>
 
       <motion.button

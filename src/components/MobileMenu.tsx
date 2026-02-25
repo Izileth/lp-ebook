@@ -7,6 +7,7 @@ import { NAV_LINKS } from "../constants";
 import { IconX, IconArrowRight, IconUser } from "./Icons";
 import { useAuth } from "../hooks/useAuth";
 import { useUserProfile } from "../hooks/useUserProfile";
+import { useAdmin } from "../hooks/useAdmin";
 
 interface MobileMenuProps {
   menuOpen: boolean;
@@ -16,6 +17,7 @@ interface MobileMenuProps {
 export function MobileMenu({ menuOpen, setMenuOpen }: MobileMenuProps) {
   const { user } = useAuth();
   const { profile } = useUserProfile();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -65,9 +67,20 @@ export function MobileMenu({ menuOpen, setMenuOpen }: MobileMenuProps) {
                 >
                   {getInitial()}
                 </Link>
-                <span className="text-white/40 text-[11px] uppercase tracking-[0.2em]">
-                  {profile?.name || user.email}
-                </span>
+                <div className="flex flex-col items-center">
+                  <span className="text-white/40 text-[11px] uppercase tracking-[0.2em]">
+                    {profile?.name || user.email}
+                  </span>
+                  {isAdmin && (
+                    <Link 
+                      to="/admin" 
+                      onClick={() => setMenuOpen(false)}
+                      className="text-emerald-400 text-[9px] uppercase tracking-[0.2em] font-bold mt-1 no-underline"
+                    >
+                      Painel Admin
+                    </Link>
+                  )}
+                </div>
               </motion.div>
             )}
 
