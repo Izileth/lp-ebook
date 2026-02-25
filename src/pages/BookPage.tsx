@@ -1,9 +1,12 @@
-// src/pages/BookPage.tsx
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useProduct } from "../hooks/useProduct"; // Import the new hook
 import { IconArrowLeft, IconArrowRight, IconBook, IconShield, IconMail, IconStar } from "../components/Icons";
+import { Header } from "../components/Header";
+import { MobileMenu } from "../components/MobileMenu";
+import { NoiseOverlay } from "../components/NoiseOverlay";
 
 // ─── Motion Variants ──────────────────────────────────────────────────────────
 
@@ -112,6 +115,7 @@ function TrustBadge({ icon, label }: TrustBadgeProps) {
 export function BookPage() {
   const { bookId } = useParams<{ bookId: string }>();
   const { product: book, loading, error } = useProduct(bookId); // Use the new hook
+  const [menuOpen, setMenuOpen] = useState(false);
 
   if (loading) return <div>Loading book details...</div>;
   if (error) return <div>Error loading book: {error}</div>;
@@ -131,18 +135,12 @@ export function BookPage() {
       />
 
       <div
-        className="bg-black min-h-screen text-white overflow-x-hidden"
+        className="bg-black min-h-screen text-white overflow-x-hidden pt-16"
         style={{ fontFamily: "'Georgia', serif" }}
       >
-        {/* Noise overlay */}
-        <div
-          aria-hidden="true"
-          className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-          }}
-        />
+        <NoiseOverlay />
+        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
         {/* Decorative vertical line */}
         <div
@@ -150,36 +148,211 @@ export function BookPage() {
           className="fixed left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/[0.06] to-transparent pointer-events-none"
         />
 
-        {/* ── Header ──────────────────────────────────────────────────────── */}
-        <motion.header
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 flex items-center justify-between px-8 md:px-16 py-6 border-b border-white/[0.06]"
-        >
-          <Link
-            to="/"
-            className="group inline-flex items-center gap-2 font-sans text-[12px] tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors duration-200"
-          >
-            <span className="transition-transform duration-200 group-hover:-translate-x-1">
-              <IconArrowLeft />
-            </span>
-            Voltar para a loja
-          </Link>
+        {/* ── Main ────────────────────────────────────────────────────────── */}
+        <main className="max-w-[1200px] mx-auto px-8 md:px-16 py-16 md:py-24">
+          <div className="mb-12">
+            <Link
+              to="/"
+              className="group inline-flex items-center gap-2 font-sans text-[12px] tracking-[0.12em] uppercase text-white/45 hover:text-white transition-colors duration-200"
+            >
+              <span className="transition-transform duration-200 group-hover:-translate-x-1">
+                <IconArrowLeft />
+              </span>
+              Voltar para a loja
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          {/* Logo */}
+            {/* ── Cover ─────────────────────────────────────────────────── */}
+            <motion.div
+              variants={imageVariants}
+              initial="hidden"
+              animate="visible"
+              className="relative"
+            >
+              {/* Badge */}
+              {book.badge && (
+                <motion.span
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="absolute -top-3 -right-3 z-10 bg-white text-black font-sans text-[10px] font-medium tracking-[0.15em] uppercase px-3 py-1"
+                >
+                  {book.badge}
+                </motion.span>
+              )}
+
+              {/* Image frame */}
+              <div className="relative aspect-[3/4] w-full max-w-sm mx-auto border border-white/[0.08] overflow-hidden">
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={book.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  /* Placeholder when no image */
+                  <div className="w-full h-full bg-gradient-to-br from-white/[0.06] to-white/[0.02] flex flex-col items-center justify-center gap-3">
+                    <span
+                      className="font-black text-white/10 select-none"
+                      style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(80px,12vw,120px)" }}
+                    >
+                      F
+                    </span>
+                    <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/20">
+                      {book.category}
+                    </span>
+                  </div>
+                )}
+
+                {/* Subtle bottom gradient */}
+                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+              </div>
+
+              {/* Decorative ring behind cover */}
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-6 -right-6 w-48 h-48 rounded-full border border-white/[0.04] pointer-events-none -z-10"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-12 -right-12 w-72 h-72 rounded-full border border-white/[0.02] pointer-events-none -z-10"
+              />
+            </motion.div>
+
+            {/* ── Details ───────────────────────────────────────────────── */}
+            <motion.div
+              variants={stagger}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col"
+            >
+              {/* Eyebrow */}
+              <motion.div variants={fadeUpVariants} custom={0} className="mb-4">
+                <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-white/35 border-l-2 border-white/20 pl-3.5">
+                  {book.category}
+                </span>
+              </motion.div>
+
+              {/* Title */}
+              <motion.h1
+                variants={fadeUpVariants}
+                custom={0.05}
+                className="font-bold leading-[1.05] tracking-[-0.02em] mb-5"
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "clamp(32px,4.5vw,58px)",
+                }}
+              >
+                {book.name} {/* Changed from book.title to book.name */}
+              </motion.h1>
+
+              {/* Star rating */}
+              <motion.div
+                variants={fadeUpVariants}
+                custom={0.1}
+                className="flex items-center gap-2 mb-6"
+              >
+                <div className="flex gap-0.5 text-white/70">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <IconStar key={i} />
+                  ))}
+                </div>
+                <span className="font-sans text-[11px] text-white/35 tracking-wide">
+                  4.9 · 127 avaliações
+                </span>
+              </motion.div>
+
+              {/* Description */}
+              <motion.p
+                variants={fadeUpVariants}
+                custom={0.15}
+                className="font-sans font-light leading-[1.75] text-white/55 mb-8"
+                style={{ fontSize: "clamp(14px,1.2vw,16px)" }}
+              >
+                {book.description ??
+                  "Um guia prático e direto ao ponto para quem busca evolução real. Conteúdo baseado em evidências, linguagem acessível e resultados aplicáveis desde a primeira leitura."}
+              </motion.p>
+
+              {/* Stats bar */}
+              <motion.div
+                variants={fadeUpVariants}
+                custom={0.2}
+                className="flex items-stretch divide-x divide-white/[0.08] border border-white/[0.08] mb-8"
+              >
+                <StatItem label="Páginas" value={book.pages ?? "–"} />
+                <StatItem label="Idioma" value="Português" />
+                <StatItem label="Formato" value="Digital" />
+                <StatItem label="Entrega" value="Imediata" />
+              </motion.div>
+
+              {/* Price + CTA */}
+              <motion.div
+                variants={fadeUpVariants}
+                custom={0.25}
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8"
+              >
+                <span
+                  className="font-bold text-white"
+                  style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,3.5vw,44px)" }}
+                >
+                  {formattedPrice} {/* Changed to formattedPrice */}
+                </span>
+
+                <motion.a
+                  href={book.checkoutUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full sm:w-auto bg-white text-black font-sans text-[13px] font-medium tracking-[0.1em] uppercase py-4 px-8 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200"
+                >
+                  Adquirir Agora
+                  <IconArrowRight />
+                </motion.a>
+              </motion.div>
+
+              {/* Trust badges */}
+              <motion.div
+                variants={fadeUpVariants}
+                custom={0.3}
+                className="flex flex-wrap gap-5 pt-6 border-t border-white/[0.06]"
+              >
+                <TrustBadge icon={<IconShield />} label="Pagamento seguro" />
+                <TrustBadge icon={<IconMail />} label="Enviado por e-mail" />
+                <TrustBadge icon={<IconBook />} label="Acesso vitalício" />
+                <TrustBadge icon={<IconStar />} label="Satisfação garantida" />
+              </motion.div>
+            </motion.div>
+          </div>
+        </main>
+
+        {/* ── Footer ──────────────────────────────────────────────────────── */}
+        <motion.footer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="px-8 md:px-16 py-10 border-t border-white/[0.05] flex flex-wrap items-center justify-between gap-4"
+        >
           <div className="flex items-baseline gap-2">
             <span
-              className="font-bold tracking-[0.02em]"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 18 }}
+              className="font-bold"
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 16 }}
             >
               FOCUS
             </span>
-            <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/25">
+            <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/20">
               | Conhecimento
             </span>
           </div>
-        </motion.header>
+          <p className="font-sans text-[11px] text-white/20 tracking-wide">
+            © 2025 Focus Conhecimento. Todos os direitos reservados.
+          </p>
+        </motion.footer>
+      </div>
+    </>
+  );
+}
 
         {/* ── Main ────────────────────────────────────────────────────────── */}
         <main className="max-w-[1200px] mx-auto px-8 md:px-16 py-16 md:py-24">

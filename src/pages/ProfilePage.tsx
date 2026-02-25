@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { useUserProfile } from "../hooks/useUserProfile";
+import { Header } from "../components/Header";
+import { MobileMenu } from "../components/MobileMenu";
+import { NoiseOverlay } from "../components/NoiseOverlay";
 import {
   IconUser,
   IconMail,
@@ -18,6 +21,7 @@ import {
   IconExternalLink,
 } from "../components/Icons";
 import { LoadingState } from "../components/ui/StatesScreens";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface ProfileFormValues {
@@ -160,6 +164,7 @@ export function ProfilePage() {
   const navigate = useNavigate();
   const { user, loading: authLoading, signOut } = useAuth();
   const { profile, loading: profileLoading, error: profileError, updateProfile } = useUserProfile();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const [form, setForm] = useState<ProfileFormValues>({
     name: "", email: "", slug: "", bio: "",
@@ -235,7 +240,10 @@ export function ProfilePage() {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-white/20 overflow-x-hidden">
+    <div className="min-h-screen bg-black text-white selection:bg-white/20 overflow-x-hidden pt-16">
+      <NoiseOverlay />
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       {/* ── Background decoration ──────────────────────────────────────── */}
       <div
@@ -265,28 +273,8 @@ export function ProfilePage() {
           animate="visible"
           className="mb-14"
         >
-          {/* Nav row */}
-          <motion.div variants={fadeUp} className="flex items-center justify-between mb-10">
-            <div className="flex items-baseline gap-2.5">
-              <span
-                className="[font-family:'Playfair_Display',serif] font-bold tracking-[0.02em]"
-                style={{ fontSize: 18 }}
-              >
-                FOCUS
-              </span>
-              <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/25">
-                | Conhecimento
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => navigate("/")}
-              className="font-sans text-[11px] tracking-[0.12em] uppercase text-white/35 hover:text-white transition-colors flex items-center gap-1.5"
-            >
-              Ir à loja <IconExternalLink size={12} />
-            </button>
-          </motion.div>
-
+          {/* Nav row removed, using main Header instead */}
+          
           {/* Avatar + title row */}
           <motion.div variants={fadeUp} className="flex items-end gap-5">
             <Avatar name={form.name} />

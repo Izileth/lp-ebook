@@ -8,6 +8,9 @@ import { useAdmin } from "../../hooks/useAdmin";
 import { ProductList } from "./ProductList";
 import { ProductForm } from "./ProductForm";
 import { LoadingState, ErrorState } from "../ui/StatesScreens";
+import { Header } from "../Header";
+import { MobileMenu } from "../MobileMenu";
+import { NoiseOverlay } from "../NoiseOverlay";
 import {
   IconPlus,
   IconArrowLeft,
@@ -46,88 +49,67 @@ const slideRight: Variants = {
   exit:    { opacity: 0, x:  16,              transition: { duration: 0.25 } },
 };
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
-
-/** Shared background decoration used across the project. */
-function SceneDecor() {
-  return (
-    <>
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 pointer-events-none opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 bg-[radial-gradient(ellipse_55%_55%_at_50%_50%,rgba(255,255,255,0.04)_0%,transparent_70%)] pointer-events-none"
-      />
-      <div
-        aria-hidden="true"
-        className="fixed left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/[0.06] to-transparent pointer-events-none"
-      />
-    </>
-  );
-}
-
 // ─── Access Denied ────────────────────────────────────────────────────────────
 
-function AccessDenied() {
+function AccessDenied({ menuOpen, setMenuOpen }: { menuOpen: boolean, setMenuOpen: (o: boolean) => void }) {
   const navigate = useNavigate();
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-black overflow-hidden">
-      <SceneDecor />
-      <span
-        aria-hidden="true"
-        className="[font-family:'Playfair_Display',serif] absolute font-black select-none pointer-events-none text-white/[0.03] leading-none"
-        style={{ fontSize: "clamp(120px,20vw,240px)" }}
-      >
-        403
-      </span>
-      <motion.div
-        variants={stagger}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 text-center px-8 max-w-[420px] flex flex-col items-center gap-6"
-      >
-        <motion.div variants={fadeUp}>
-          <div className="w-12 h-12 border border-white/[0.14] flex items-center justify-center text-white/40">
-            <IconAlertCircle size={20} />
-          </div>
-        </motion.div>
-        <motion.div variants={fadeUp} className="flex flex-col items-center gap-2">
-          <span className="font-sans text-[10px] tracking-[0.28em] uppercase text-white/30 border-l-2 border-white/20 pl-3">
-            Acesso restrito
-          </span>
-          <h1
-            className="[font-family:'Playfair_Display',serif] font-bold leading-[1.08] tracking-[-0.02em] text-white"
-            style={{ fontSize: "clamp(24px,3.5vw,38px)" }}
+    <div className="relative flex flex-col min-h-screen bg-black overflow-hidden pt-16">
+      <NoiseOverlay />
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      
+      <div className="flex-1 flex items-center justify-center">
+        <span
+          aria-hidden="true"
+          className="[font-family:'Playfair_Display',serif] absolute font-black select-none pointer-events-none text-white/[0.03] leading-none"
+          style={{ fontSize: "clamp(120px,20vw,240px)" }}
+        >
+          403
+        </span>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 text-center px-8 max-w-[420px] flex flex-col items-center gap-6"
+        >
+          <motion.div variants={fadeUp}>
+            <div className="w-12 h-12 border border-white/[0.14] flex items-center justify-center text-white/40">
+              <IconAlertCircle size={20} />
+            </div>
+          </motion.div>
+          <motion.div variants={fadeUp} className="flex flex-col items-center gap-2">
+            <span className="font-sans text-[10px] tracking-[0.28em] uppercase text-white/30 border-l-2 border-white/20 pl-3">
+              Acesso restrito
+            </span>
+            <h1
+              className="[font-family:'Playfair_Display',serif] font-bold leading-[1.08] tracking-[-0.02em] text-white"
+              style={{ fontSize: "clamp(24px,3.5vw,38px)" }}
+            >
+              Área exclusiva
+              <br />
+              <em className="not-italic text-white/55">de administradores.</em>
+            </h1>
+          </motion.div>
+          <motion.p
+            variants={fadeUp}
+            className="font-sans font-light text-[13px] leading-[1.7] text-white/40 max-w-[300px]"
           >
-            Área exclusiva
-            <br />
-            <em className="not-italic text-white/55">de administradores.</em>
-          </h1>
+            Você não possui permissão para acessar esta área.
+            Entre em contato com o administrador do sistema.
+          </motion.p>
+          <motion.button
+            variants={fadeUp}
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate("/")}
+            className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-3.5 flex items-center gap-2 hover:bg-white/85 transition-colors"
+          >
+            <IconArrowLeft size={14} />
+            Voltar à loja
+          </motion.button>
         </motion.div>
-        <motion.p
-          variants={fadeUp}
-          className="font-sans font-light text-[13px] leading-[1.7] text-white/40 max-w-[300px]"
-        >
-          Você não possui permissão para acessar esta área.
-          Entre em contato com o administrador do sistema.
-        </motion.p>
-        <motion.button
-          variants={fadeUp}
-          whileHover={{ scale: 1.03, y: -1 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => navigate("/")}
-          className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-3.5 flex items-center gap-2 hover:bg-white/85 transition-colors"
-        >
-          <IconArrowLeft size={14} />
-          Voltar à loja
-        </motion.button>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -170,6 +152,7 @@ export function AdminDashboard() {
 
   const [viewState, setViewState] = useState<ViewState>({ current: "list" });
   const [refreshKey, setRefreshKey] = useState<number>(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // ── Auth guard ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -212,14 +195,16 @@ export function AdminDashboard() {
   }
 
   if (!user)    return null;
-  if (!isAdmin) return <AccessDenied />;
+  if (!isAdmin) return <AccessDenied menuOpen={menuOpen} setMenuOpen={setMenuOpen} />;
 
   // ── Main render ───────────────────────────────────────────────────────────
   const isFormView = viewState.current === "create" || viewState.current === "edit";
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-x-hidden selection:bg-white/20">
-      <SceneDecor />
+    <div className="min-h-screen bg-black text-white overflow-x-hidden selection:bg-white/20 pt-16">
+      <NoiseOverlay />
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       <div className="relative z-10 max-w-[1100px] mx-auto px-6 md:px-10 py-16">
 
@@ -230,37 +215,156 @@ export function AdminDashboard() {
           animate="visible"
           className="mb-14"
         >
-          {/* Top bar */}
-          <motion.div
-            variants={fadeUp}
-            className="flex items-center justify-between mb-10"
-          >
-            <div className="flex items-baseline gap-2.5">
-              <span
-                className="[font-family:'Playfair_Display',serif] font-bold tracking-[0.02em]"
-                style={{ fontSize: 18 }}
-              >
-                FOCUS
-              </span>
-              <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/25">
-                | Conhecimento
-              </span>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <span className="hidden sm:block font-sans text-[10px] tracking-[0.18em] uppercase text-white/25">
-                {user.email}
-              </span>
-              <button
-                type="button"
-                onClick={() => navigate("/profile")}
-                className="text-white/30 hover:text-white transition-colors"
-                aria-label="Perfil"
-              >
-                <IconUser size={16} />
-              </button>
-            </div>
+          {/* Title */}
+          <motion.div variants={fadeUp} className="flex flex-col gap-3 mb-8">
+            <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-white/35 border-l-2 border-white/20 pl-3">
+              Painel administrativo
+            </span>
+            <h1
+              className="[font-family:'Playfair_Display',serif] font-bold leading-[1.05] tracking-[-0.02em]"
+              style={{ fontSize: "clamp(28px,4.5vw,52px)" }}
+            >
+              Gerencie seu
+              <br />
+              <em className="not-italic text-white/60">catálogo.</em>
+            </h1>
           </motion.div>
+
+          {/* Stats row — only on list view */}
+          <AnimatePresence>
+            {!isFormView && (
+              <motion.div
+                key="stats"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0,  height: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="overflow-hidden"
+              >
+                <motion.div
+                  variants={stagger}
+                  initial="hidden"
+                  animate="visible"
+                  className="grid grid-cols-2 md:grid-cols-4 gap-3"
+                >
+                  <StatCard icon={<IconBookOpen  size={18} />} label="Ebooks"    value="—" />
+                  <StatCard icon={<IconTrendingUp size={18} />} label="Vendas"    value="—" />
+                  <StatCard icon={<IconUser       size={18} />} label="Usuários"  value="—" />
+                  <StatCard icon={<IconSettings   size={18} />} label="Revisões"  value="—" />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.header>
+
+        {/* ── View container ──────────────────────────────────────────── */}
+        <AnimatePresence mode="wait">
+
+          {/* ── List view ──────────────────────────────────────────────── */}
+          {viewState.current === "list" && (
+            <motion.div
+              key="list"
+              variants={slideRight}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {/* Section header */}
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col gap-1">
+                  <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-white/30">
+                    Produtos
+                  </span>
+                  <h2
+                    className="[font-family:'Playfair_Display',serif] font-bold"
+                    style={{ fontSize: "clamp(18px,2.5vw,26px)" }}
+                  >
+                    Catálogo atual
+                  </h2>
+                </div>
+
+                <motion.button
+                  type="button"
+                  onClick={handleCreateNew}
+                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="bg-white text-black font-sans text-[11px] font-medium tracking-[0.12em] uppercase px-5 py-3 flex items-center gap-2 hover:bg-white/85 transition-colors"
+                >
+                  <IconPlus size={14} />
+                  Novo produto
+                </motion.button>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-white/[0.07] mb-8" />
+
+              <ProductList
+                key={refreshKey}
+                onEdit={handleEdit}
+                onSuccess={handleSuccess}
+              />
+            </motion.div>
+          )}
+
+          {/* ── Form view (create / edit) ──────────────────────────────── */}
+          {isFormView && (
+            <motion.div
+              key="form"
+              variants={slideRight}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              {/* Back + section header */}
+              <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
+                <div className="flex flex-col gap-3">
+                  <motion.button
+                    type="button"
+                    onClick={handleCancel}
+                    whileHover={{ x: -2 }}
+                    className="group flex items-center gap-2 font-sans text-[11px] tracking-[0.12em] uppercase text-white/35 hover:text-white transition-colors w-max"
+                  >
+                    <span className="transition-transform duration-200 group-hover:-translate-x-1">
+                      <IconArrowLeft size={14} />
+                    </span>
+                    Voltar ao catálogo
+                  </motion.button>
+
+                  <div className="flex flex-col gap-1">
+                    <span className="font-sans text-[10px] tracking-[0.22em] uppercase text-white/30">
+                      {viewState.current === "create" ? "Novo produto" : "Editar produto"}
+                    </span>
+                    <h2
+                      className="[font-family:'Playfair_Display',serif] font-bold leading-[1.05]"
+                      style={{ fontSize: "clamp(20px,3vw,32px)" }}
+                    >
+                      {viewState.current === "create" ? (
+                        <>Adicionar ao<br /><em className="not-italic text-white/60">catálogo.</em></>
+                      ) : (
+                        <>Atualizar<br /><em className="not-italic text-white/60">publicação.</em></>
+                      )}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-white/[0.07] mb-8" />
+
+              <div className="border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm p-8 md:p-10">
+                <ProductForm
+                  product={viewState.product}
+                  onSuccess={handleSuccess}
+                />
+              </div>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
 
           {/* Title */}
           <motion.div variants={fadeUp} className="flex flex-col gap-3 mb-8">

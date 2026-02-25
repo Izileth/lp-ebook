@@ -1,14 +1,17 @@
 // src/pages/LoginPage.tsx
-import { useEffect} from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthForm } from '../components/auth/AuthForm';
 import { useAuth } from '../hooks/useAuth';
 import { useAdmin } from '../hooks/useAdmin';
+import { Header } from '../components/Header';
+import { MobileMenu } from '../components/MobileMenu';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const { user, loading: authInitialLoading } = useAuth(); // Renamed to avoid confusion
   const { isAdmin, loading: adminInitialLoading } = useAdmin(); // Renamed to avoid confusion
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // This useEffect handles redirection *after* authentication status is known
   useEffect(() => {
@@ -38,6 +41,10 @@ export function LoginPage() {
   // In all other cases (no user, or user exists and all statuses loaded), render the AuthForm.
   // Redirection is handled by useEffect.
   return (
-    <AuthForm onSuccess={() => {}} />
+    <>
+      <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <AuthForm onSuccess={() => {}} />
+    </>
   );
 }
