@@ -4,7 +4,7 @@ import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { STATS } from "../constants";
 import { IconArrowRight } from "./Icons";
 import { VideoBackground } from "./VideoBackground";
-
+import { ScrambleText } from "./ui/HeaderText";
 export function HeroSection() {
   const videoPlaylist = [
     "https://v1.pinimg.com/videos/iht/expMp4/e9/e6/3c/e9e63c701406e2e4ebdf5e540db3b7c6_720w.mp4",
@@ -39,7 +39,7 @@ export function HeroSection() {
           className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px] text-white"
           style={{ fontSize: "clamp(52px,9vw,120px)" }}
         >
-          Conhecimento
+            <ScrambleText />
           <br />
           <em className="not-italic text-white/80">que transforma.</em>
         </motion.h1>
