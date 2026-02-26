@@ -27,11 +27,11 @@ interface ProductFormProps {
 interface FormData {
   name: string;
   description: string;
-  price: number;
-  discount_price: number;
+  price: string;
+  discount_price: string;
   slug: string;
   language: string;
-  rating: number;
+  rating: string;
   category: string;
   badge: string;
   pages: string;
@@ -49,11 +49,11 @@ function buildInitialFormData(product?: Product): FormData {
   return {
     name: product?.name ?? "",
     description: product?.description ?? "",
-    price: product?.price ?? 0,
-    discount_price: product?.discount_price ?? 0,
+    price: product?.price?.toString() ?? "",
+    discount_price: product?.discount_price?.toString() ?? "",
     slug: product?.slug ?? "",
     language: product?.language ?? "Português",
-    rating: product?.rating ?? 5.0,
+    rating: product?.rating?.toString() ?? "5.0",
     category: product?.category ?? "",
     badge: product?.badge ?? "",
     pages: product?.pages ?? "",
@@ -114,8 +114,8 @@ function Field({ label, icon, hint, required, children }: FieldProps) {
 
 // Price field with currency prefix
 interface PriceFieldProps {
-  value: number;
-  onChange: (v: number) => void;
+  value: string;
+  onChange: (v: string) => void;
 }
 
 function PriceField({ value, onChange }: PriceFieldProps) {
@@ -129,13 +129,18 @@ function PriceField({ value, onChange }: PriceFieldProps) {
           R$
         </span>
         <input
-          type="number"
+          type="text"
           name="price"
           value={value}
-          step="0.01"
-          min="0"
           required
-          onChange={(e) => onChange(Number(e.target.value))}
+          inputMode="decimal"
+          onChange={(e) => {
+            const val = e.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+            // Prevent multiple dots
+            if ((val.match(/\./g) || []).length <= 1) {
+              onChange(val);
+            }
+          }}
           className="w-full bg-transparent py-4 pl-10 pr-4 font-sans text-[13px] text-white outline-none tabular-nums"
         />
       </div>
@@ -207,7 +212,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
   );
 
   // ── Price handler (separate to keep type safety) ──────────────────────────
-  const handlePriceChange = useCallback((v: number) => {
+  const handlePriceChange = useCallback((v: string) => {
     setFormData((prev) => ({ ...prev, price: v }));
   }, []);
 
@@ -229,18 +234,18 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       setSubmitStatus("loading");
       setErrorMsg(null);
 
-      const productData: FormData = {
+      const productData = {
         ...formData,
-        price: Number(formData.price),
-        discount_price: Number(formData.discount_price),
-        rating: Number(formData.rating),
+        price: parseFloat(formData.price) || 0,
+        discount_price: formData.discount_price ? parseFloat(formData.discount_price) : undefined,
+        rating: parseFloat(formData.rating) || 0,
       };
 
       let result: { error?: { message: string } | null } | null | undefined;
 
       if (isEditing && product) {
         // Exclude image_urls from update payload (managed separately)
-        const { image_urls: _,   ...updateData } = productData;
+        const { image_urls: _, ...updateData } = productData;
         result = await updateProduct(product.id, updateData);
         console.log("Update result:", _, updateData, result);
       } else {
@@ -324,12 +329,16 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
                     R$
                   </span>
                   <input
-                    type="number"
+                    type="text"
                     name="discount_price"
                     value={formData.discount_price}
-                    step="0.01"
-                    min="0"
-                    onChange={(e) => setFormData(prev => ({ ...prev, discount_price: Number(e.target.value) }))}
+                    inputMode="decimal"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+                      if ((val.match(/\./g) || []).length <= 1) {
+                        setFormData(prev => ({ ...prev, discount_price: val }));
+                      }
+                    }}
                     className="w-full bg-transparent py-4 pl-10 pr-4 font-sans text-[13px] text-white outline-none tabular-nums"
                   />
                 </div>
@@ -401,13 +410,16 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
             <div className="grid grid-cols-2 gap-4">
               <Field label="Avaliação" required>
                 <input
-                  type="number"
+                  type="text"
                   name="rating"
                   value={formData.rating}
-                  step="0.1"
-                  min="0"
-                  max="5"
-                  onChange={(e) => setFormData(prev => ({ ...prev, rating: Number(e.target.value) }))}
+                  inputMode="decimal"
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+                    if ((val.match(/\./g) || []).length <= 1) {
+                      setFormData(prev => ({ ...prev, rating: val }));
+                    }
+                  }}
                   required
                   className="w-full bg-transparent py-4 px-4 font-sans text-[13px] text-white placeholder-white/20 outline-none"
                 />
