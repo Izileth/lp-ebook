@@ -51,3 +51,10 @@ export interface Profile {
   created_at: string;
   updated_at: string;
 }
+
+export interface AdminStats {
+  users_count: number;
+  products_count: number;
+  admins_count: number;
+  interactions_count: number;
+}

@@ -1,15 +1,48 @@
 // src/components/HeroSection.tsx
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
-import { STATS } from "../constants";
+import { supabase } from "../lib/supabaseClient";
 import { IconArrowRight } from "./Icons";
 import { VideoBackground } from "./VideoBackground";
 import { ScrambleText } from "./ui/HeaderText";
+
+interface PublicStats {
+  titles_count: number;
+  avg_rating: number;
+  readers_count: number;
+}
+
 export function HeroSection() {
+  const [stats, setStats] = useState<PublicStats>({
+    titles_count: 0,
+    avg_rating: 4.9,
+    readers_count: 3000,
+  });
+
   const videoPlaylist = [
     "https://v1.pinimg.com/videos/iht/expMp4/e9/e6/3c/e9e63c701406e2e4ebdf5e540db3b7c6_720w.mp4",
     "https://v1.pinimg.com/videos/iht/expMp4/73/10/0a/73100ac3ba00396f3c30bd44e558dce6_720w.mp4",
     "https://v1.pinimg.com/videos/iht/expMp4/3c/66/82/3c6682f50ce9e73a6305fd549d25d18e_720w.mp4"
+  ];
+
+  useEffect(() => {
+    async function fetchPublicStats() {
+      try {
+        const { data, error } = await supabase.rpc("get_public_stats");
+        if (error) throw error;
+        if (data) setStats(data);
+      } catch (err) {
+        console.error("Error fetching public stats:", err);
+      }
+    }
+    fetchPublicStats();
+  }, []);
+
+  const displayStats = [
+    { value: `${stats.titles_count}+`, label: "Títulos" },
+    { value: stats.avg_rating.toFixed(1), label: "Avaliação" },
+    { value: `${(stats.readers_count / 1000).toFixed(1)}k+`, label: "Leitores" },
   ];
 
   return (
@@ -76,7 +109,7 @@ export function HeroSection() {
 
         {/* Stats */}
         <motion.div variants={staggerContainer} className="flex gap-10 flex-wrap">
-          {STATS.map(({ value, label }) => (
+          {displayStats.map(({ value, label }) => (
             <motion.div key={label} variants={fadeUpVariants} className="border-l border-white/[0.14] pl-6">
               <p className="[font-family:'Playfair_Display',serif] text-[28px] font-bold">{value}</p>
               <p className="font-sans text-[12px] tracking-[0.15em] uppercase text-white/30 mt-0.5">{label}</p>

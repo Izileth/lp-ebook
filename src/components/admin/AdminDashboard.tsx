@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdmin } from "../../hooks/useAdmin";
+import { supabase } from "../../lib/supabaseClient";
 import { ProductList } from "./ProductList";
 import { ProductForm } from "./ProductForm";
 import { LoadingState, ErrorState } from "../ui/StatesScreens";
@@ -20,7 +21,7 @@ import {
   IconTrendingUp,
   IconBookOpen,
 } from "../Icons";
-import type { Product } from "../../types";
+import type { Product, AdminStats } from "../../types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -153,6 +154,27 @@ export function AdminDashboard() {
   const [viewState, setViewState] = useState<ViewState>({ current: "list" });
   const [refreshKey, setRefreshKey] = useState<number>(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+
+  // ── Fetch Stats ───────────────────────────────────────────────────────────
+  const fetchStats = useCallback(async () => {
+    if (!isAdmin) return;
+    setStatsLoading(true);
+    try {
+      const { data, error } = await supabase.rpc('get_admin_stats');
+      if (error) throw error;
+      setStats(data);
+    } catch (err) {
+      console.error("Error fetching stats:", err);
+    } finally {
+      setStatsLoading(false);
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats, refreshKey]);
 
   // ── Auth guard ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -247,10 +269,26 @@ export function AdminDashboard() {
                   animate="visible"
                   className="grid grid-cols-2 md:grid-cols-4 gap-3"
                 >
-                  <StatCard icon={<IconBookOpen  size={18} />} label="Ebooks"    value="—" />
-                  <StatCard icon={<IconTrendingUp size={18} />} label="Vendas"    value="—" />
-                  <StatCard icon={<IconUser       size={18} />} label="Usuários"  value="—" />
-                  <StatCard icon={<IconSettings   size={18} />} label="Revisões"  value="—" />
+                  <StatCard 
+                    icon={<IconBookOpen size={18} />} 
+                    label="Produtos" 
+                    value={statsLoading ? "..." : (stats?.products_count?.toString() ?? "0")} 
+                  />
+                  <StatCard 
+                    icon={<IconTrendingUp size={18} />} 
+                    label="Interações" 
+                    value={statsLoading ? "..." : (stats?.interactions_count?.toString() ?? "0")} 
+                  />
+                  <StatCard 
+                    icon={<IconUser size={18} />} 
+                    label="Usuários" 
+                    value={statsLoading ? "..." : (stats?.users_count?.toString() ?? "0")} 
+                  />
+                  <StatCard 
+                    icon={<IconSettings size={18} />} 
+                    label="Admins" 
+                    value={statsLoading ? "..." : (stats?.admins_count?.toString() ?? "0")} 
+                  />
                 </motion.div>
               </motion.div>
             )}

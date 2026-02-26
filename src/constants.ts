@@ -1,5 +1,5 @@
 // src/constants.ts
-import type { Book, Stat } from "./types";
+import type { Book } from "./types";
 import Image from "./assets/images/image.jpg";
 import Image2 from "./assets/images/image2.jpg";
 import Image3 from "./assets/images/image3.jpg";
@@ -54,12 +54,6 @@ export const BOOKS: Book[] = [
     description:
       "Em um mundo cheio de distrações, manter o foco virou um superpoder. Aprenda técnicas práticas para eliminar ruídos, aumentar sua produtividade e concluir o que realmente importa.",
   },
-];
-
-export const STATS: Stat[] = [
-  { value: "12+", label: "Títulos" },
-  { value: "4.9", label: "Avaliação" },
-  { value: "3k+", label: "Leitores" },
 ];
 
 export const NAV_LINKS = ["Ebooks", "Sobre", "Contato"] as const;
