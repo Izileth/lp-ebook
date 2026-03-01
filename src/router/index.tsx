@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
 import { BookPage } from "../pages/BookPage";
-import { AdminDashboard } from "../components/admin/AdminDashboard";
+import { AdminPage } from "../pages/AdminPage";
 import { LoginPage } from "../pages/LoginPage";
 import { ProfilePage } from "../pages/ProfilePage";
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminDashboard />,
+    element: <AdminPage />,
   },
   {
     path: "/login",
