@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { FormEvent } from "react";
 import { motion,  AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { IconMail, IconArrowRight, IconCheck } from "./Icons";
+import { IconMail, IconArrowRight, IconCheck, IconLoader, IconAlertCircle } from "./Icons";
+import { supabase } from "../lib/supabaseClient";
 
 // ─── Variants ─────────────────────────────────────────────────────────────────
 
@@ -21,14 +22,39 @@ const fadeUp: Variants = {
 const NewsletterSection = () => {
   const [email, setEmail]       = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loading, setLoading]     = useState<boolean>(false);
+  const [error, setError]         = useState<string | null>(null);
   const [focused, setFocused]   = useState<boolean>(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email.trim()) return;
-    // TODO: integrate with your email service
-    setSubmitted(true);
-  };
+    if (!email.trim() || loading) return;
+    
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { error: insertError } = await supabase
+        .from('newsletter_subscriptions')
+        .insert([{ email: email.trim().toLowerCase() }]);
+
+      if (insertError) {
+        // Handle unique constraint error specifically
+        if (insertError.code === '23505') {
+          setError("Este e-mail já está inscrito em nossa newsletter.");
+        } else {
+          throw insertError;
+        }
+      } else {
+        setSubmitted(true);
+      }
+    } catch (err) {
+      console.error("Newsletter error:", err);
+      setError("Ocorreu um erro ao processar sua inscrição. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  }, [email, loading]);
 
   return (
     <motion.section
@@ -127,44 +153,65 @@ const NewsletterSection = () => {
               </motion.div>
             ) : (
               /* ── Input form ── */
-              <motion.form
-                key="form"
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row items-stretch gap-0 w-full max-w-[460px] mx-auto"
-              >
-                {/* Input */}
-                <div
-                  className="relative flex-1 border border-white/[0.12] transition-[border-color] duration-200"
-                  style={{ borderColor: focused ? "rgba(255,255,255,0.35)" : undefined }}
+              <div className="flex flex-col gap-4">
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit}
+                  className="flex flex-col sm:flex-row items-stretch gap-0 w-full max-w-[460px] mx-auto"
                 >
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none">
-                    <IconMail size={15} />
-                  </span>
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
-                    placeholder="Seu melhor e-mail"
-                    className="w-full h-full bg-transparent text-white placeholder-white/25 font-sans text-[13px] tracking-wide py-4 pl-10 pr-4 outline-none"
-                  />
-                </div>
+                  {/* Input */}
+                  <div
+                    className="relative flex-1 border border-white/[0.12] transition-[border-color] duration-200"
+                    style={{ borderColor: focused ? "rgba(255,255,255,0.35)" : undefined }}
+                  >
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25 pointer-events-none">
+                      <IconMail size={15} />
+                    </span>
+                    <input
+                      type="email"
+                      required
+                      disabled={loading}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onFocus={() => setFocused(true)}
+                      onBlur={() => setFocused(false)}
+                      placeholder="Seu melhor e-mail"
+                      className="w-full h-full bg-transparent text-white placeholder-white/25 font-sans text-[13px] tracking-wide py-4 pl-10 pr-4 outline-none disabled:opacity-50"
+                    />
+                  </div>
 
-                {/* Submit */}
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-4 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200 whitespace-nowrap"
-                >
-                  Inscrever-se
-                  <IconArrowRight size={14} />
-                </motion.button>
-              </motion.form>
+                  {/* Submit */}
+                  <motion.button
+                    type="submit"
+                    disabled={loading}
+                    whileHover={loading ? {} : { scale: 1.02 }}
+                    whileTap={loading ? {} : { scale: 0.97 }}
+                    className="bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase px-7 py-4 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200 whitespace-nowrap disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <><IconLoader size={14} className="animate-spin" /> Processando...</>
+                    ) : (
+                      <>Inscrever-se <IconArrowRight size={14} /></>
+                    )}
+                  </motion.button>
+                </motion.form>
+
+                <AnimatePresence>
+                  {error && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="flex items-center justify-center gap-2 text-red-500/80 font-sans text-[12px] tracking-wide"
+                    >
+                      <IconAlertCircle size={14} />
+                      {error}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             )}
           </AnimatePresence>
         </motion.div>
@@ -182,5 +229,8 @@ const NewsletterSection = () => {
     </motion.section>
   );
 };
+
+export default NewsletterSection;
+
 
 export default NewsletterSection;
