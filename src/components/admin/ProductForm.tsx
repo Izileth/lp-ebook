@@ -244,10 +244,7 @@ export function ProductForm({ product, onSuccess }: ProductFormProps) {
       let result: { error?: { message: string } | null } | null | undefined;
 
       if (isEditing && product) {
-        // Exclude image_urls from update payload (managed separately)
-        const { image_urls: _, ...updateData } = productData;
-        result = await updateProduct(product.id, updateData);
-        console.log("Update result:", _, updateData, result);
+        result = await updateProduct(product.id, productData as any);
       } else {
         result = await createProduct(productData);
       }

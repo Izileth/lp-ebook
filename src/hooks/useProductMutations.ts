@@ -50,11 +50,11 @@ export function useUpdateProduct() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateProduct = async (productId: number, productData: Partial<{
+  const updateProduct = async (productId: number, productData: {
     name: string;
     description: string;
     price: number;
-    discount_price: number;
+    discount_price?: number;
     slug: string;
     language: string;
     rating: number;
@@ -62,10 +62,10 @@ export function useUpdateProduct() {
     badge: string;
     pages: string;
     image_urls: string[];
-    checkout_url: string;
-    access_url: string;
-    share_url: string;
-  }>) => {
+    checkout_url?: string;
+    access_url?: string;
+    share_url?: string;
+  }) => {
     setLoading(true);
     setError(null);
 
@@ -75,12 +75,10 @@ export function useUpdateProduct() {
       return null;
     }
 
-    // Note: This only updates the products table.
-    // Updating images would require more complex logic, like deleting old images and adding new ones.
-    const { data, error } = await supabase
-      .from('products')
-      .update(productData)
-      .eq('id', productId);
+    const { data, error } = await supabase.rpc('update_product_with_images', {
+      ...productData,
+      id: productId
+    });
 
     if (error) {
       setError(error.message);
