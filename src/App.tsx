@@ -4,6 +4,7 @@ import SplashScreen from "./components/SplashScreen"; // Import the SplashScreen
 import { NoiseOverlay } from "./components/NoiseOverlay";
 import { MobileMenu } from "./components/MobileMenu";
 import { Header } from "./components/Header";
+import { OfferCountdown } from "./components/OfferCountdown";
 import { HeroSection } from "./components/HeroSection";
 import { FeaturesStrip } from "./components/FeaturesStrip";
 import { BooksSection } from "./components/BooksSection";
@@ -31,6 +32,7 @@ export default function App() {
         <NoiseOverlay />
         <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <OfferCountdown />
         <main>
           <HeroSection />
           <FeaturesStrip />
