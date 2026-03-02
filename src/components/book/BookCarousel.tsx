@@ -123,7 +123,7 @@ export function BookCarousel({
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [currentIndex, hasMultiple, isPaused, isHovered, paginate]);
 
-  const handleDragEnd = useCallback((e: MouseEvent | TouchEvent | PointerEvent, { offset, velocity }: PanInfo) => {
+  const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, { offset, velocity }: PanInfo) => {
     const power = swipePower(offset.x, velocity.x);
     if (power < -SWIPE_THRESHOLD) paginate(1);
     else if (power > SWIPE_THRESHOLD) paginate(-1);

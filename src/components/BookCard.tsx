@@ -23,7 +23,7 @@ export function BookCard({ book, index }: BookCardProps) {
     }
   };
 
-  const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
+ // const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
 
   const hasDiscount = book.discount_price && book.discount_price > 0 && book.discount_price < book.price;
 
