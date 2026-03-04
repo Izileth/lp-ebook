@@ -112,7 +112,7 @@ export function BookPage() {
             />
             
             <BookDetails 
-              book={book}
+              book={{ ...book, id: String(book.id) }}
               formattedPrice={formattedPrice}
               formattedDiscountPrice={formattedDiscountPrice}
               hasDiscount={hasDiscount}
