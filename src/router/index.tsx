@@ -6,6 +6,7 @@ import { BookPage } from "../pages/BookPage";
 import { AdminPage } from "../pages/AdminPage";
 import { LoginPage } from "../pages/LoginPage";
 import { ProfilePage } from "../pages/ProfilePage";
+import UnsubscribePage from "../pages/UnsubscribePage";
 import SplashScreen from "../components/SplashScreen";
 
 function SplashLayout() {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/unsubscribe",
+        element: <UnsubscribePage />,
       },
     ],
   },

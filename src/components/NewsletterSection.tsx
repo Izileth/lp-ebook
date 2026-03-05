@@ -121,7 +121,7 @@ const NewsletterSection = () => {
                   Inscrição confirmada!
                 </p>
                 <p className="font-sans text-[13px] text-white/40 tracking-wide">
-                  Em breve você receberá nossos conteúdos.
+                  Verifique a confirmação no seu e-mail. Se não encontrar, confira a caixa de spam ou promoções.
                 </p>
               </motion.div>
             ) : (
