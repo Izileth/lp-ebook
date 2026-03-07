@@ -416,6 +416,16 @@ export function IconCheckCircle({ size = 18, strokeWidth = 1.5, className }: Ico
 
 // ─── Utility & Performance ────────────────────────────────────────────────────
 
+export function IconMoreHorizontal({ size = 18, strokeWidth = 1.8, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
+    </svg>
+  );
+}
+
 export function IconZap({ size = 18, strokeWidth = 1.5, className }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>

@@ -1,10 +1,10 @@
 // src/components/BookCard.tsx
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "../types";
 import { cardVariants } from "../motionVariants";
-import { IconBook, IconArrowRight, IconStar } from "./Icons";
+import { IconBook, IconArrowRight, IconStar, IconMoreHorizontal, IconX, IconGift } from "./Icons";
 import { BookCarousel } from "./book/BookCarousel";
 import { useInteractions } from "../hooks/useInteractions";
 
@@ -16,6 +16,7 @@ interface BookCardProps {
 export function BookCard({ book, index }: BookCardProps) {
   const navigate = useNavigate();
   const { trackInteraction } = useInteractions();
+  const [showBonuses, setShowBonuses] = useState(false);
 
   // Track product view on mount
   useEffect(() => {
@@ -40,9 +41,13 @@ export function BookCard({ book, index }: BookCardProps) {
     }
   };
 
- // const imageUrl = book.product_images?.[0]?.image_url || '/placeholder.jpg'; // Use a placeholder if no image
+  const toggleBonuses = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowBonuses(!showBonuses);
+  };
 
   const hasDiscount = book.discount_price && book.discount_price > 0 && book.discount_price < book.price;
+  const hasBonuses = book.bonuses && book.bonuses.length > 0;
 
   return (
     <motion.article
@@ -52,15 +57,67 @@ export function BookCard({ book, index }: BookCardProps) {
       whileInView="visible"
       viewport={{ once: true, amount: 0.15 }}
       whileHover={{ y: -6, borderColor: "rgba(255,255,255,0.28)" }}
-      className="relative border border-white/[0.08] bg-[#000] p-8 cursor-pointer group"
+      className="relative border border-white/[0.08] bg-[#000] p-8 cursor-pointer group overflow-hidden"
       style={{ transition: "border-color 0.25s" }}
       onClick={handleCardClick}
     >
       {book.badge !== null && (
-        <span className="absolute top-5 right-5 bg-white text-black font-sans text-[10px] tracking-[0.15em] uppercase px-2.5 py-0.5 z-10">
+        <span className="absolute top-5 left-5 bg-white text-black font-sans text-[10px] tracking-[0.15em] uppercase px-2.5 py-0.5 z-10">
           {book.badge}
         </span>
       )}
+
+      {hasBonuses && (
+        <button
+          onClick={toggleBonuses}
+          className="absolute top-5 right-5 z-20 w-8 h-8 flex items-center justify-center border border-white/10 bg-black/40 backdrop-blur-md text-white/50 hover:text-white hover:border-white/30 transition-all rounded-full"
+          title="Ver bônus"
+        >
+          <IconMoreHorizontal size={16} />
+        </button>
+      )}
+
+      {/* Bonus Overlay */}
+      <AnimatePresence>
+        {showBonuses && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute inset-0 z-30 bg-black/95 backdrop-blur-xl p-8 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <IconGift className="text-white/40" size={14} />
+                <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/40">Bônus Exclusivos</span>
+              </div>
+              <button 
+                onClick={toggleBonuses}
+                className="text-white/20 hover:text-white transition-colors"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-6 pr-2">
+              {book.bonuses?.map((bonus, i) => (
+                <div key={i} className="flex flex-col gap-1.5">
+                  <h4 className="font-sans text-[12px] font-bold text-white tracking-wide uppercase">{bonus.title}</h4>
+                  <p className="font-sans text-[11px] leading-relaxed text-white/40">{bonus.description}</p>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleCardClick}
+              className="mt-6 font-sans text-[10px] tracking-[0.15em] uppercase text-white/30 hover:text-white flex items-center gap-2 transition-colors border-t border-white/10 pt-4"
+            >
+              Ver detalhes completos <IconArrowRight size={12} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Cover */}
       <div className="relative w-full aspect-[3/4] mb-6 overflow-hidden">
@@ -76,7 +133,7 @@ export function BookCard({ book, index }: BookCardProps) {
         />
         
         {/* Subtle category watermark + Rating */}
-        <div className="absolute bottom-4 left-4 z-50 flex items-center gap-2 pointer-events-none">
+        <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 pointer-events-none">
           <span className="font-sans text-[9px] tracking-[0.2em] uppercase text-white/40 bg-black/40 px-2 py-0.5 backdrop-blur-sm">
             {book.category}
           </span>
@@ -90,7 +147,7 @@ export function BookCard({ book, index }: BookCardProps) {
         <span className="text-white/25"><IconBook /></span>
         {book.category}
       </p>
-      <h3 className="[font-family:'Playfair_Display',serif] text-[18px] font-bold leading-[1.25] mb-4">
+      <h3 className="[font-family:'Playfair_Display',serif] text-[18px] font-bold leading-[1.25] mb-4 h-[2.5em] line-clamp-2">
         {book.name}
       </h3>
 
