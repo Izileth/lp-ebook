@@ -1,6 +1,6 @@
 // src/components/BooksSection.tsx
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { IconBook, IconArrowRight } from "./Icons";
 import { BookCard } from "./BookCard";
@@ -9,8 +9,8 @@ import { LoadingState, ErrorState } from "./ui/StatesScreens";
 import type { Product } from "../types";
 
 export function BooksSection() {
+  const navigate = useNavigate();
   const { products, loading, error } = useProducts();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   if (loading) {
     return <LoadingState />;
@@ -22,11 +22,6 @@ export function BooksSection() {
 
   // Get unique categories
   const categories = Array.from(new Set(products.map(p => p.category))).filter(Boolean);
-
-  // Filter products based on selection
-  const filteredProducts = selectedCategory 
-    ? products.filter(p => p.category === selectedCategory)
-    : products;
 
   return (
     <section id="livros" className="px-10 py-[100px] border-b border-white/[0.05]">
@@ -66,25 +61,17 @@ export function BooksSection() {
           className="flex flex-wrap items-center gap-3 mb-10 pb-6 border-b border-white/5"
         >
           <button
-            onClick={() => setSelectedCategory(null)}
-            className={`text-[11px] uppercase tracking-[0.15em] px-6 py-2.5 transition-all duration-300 flex items-center gap-2 ${
-              selectedCategory === null 
-              ? "bg-white text-black font-bold" 
-              : "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
-            }`}
+            onClick={() => navigate('/')}
+            className="text-[11px] uppercase tracking-[0.15em] px-6 py-2.5 transition-all duration-300 flex items-center gap-2 bg-white text-black font-bold"
           >
-            Ver Todos {selectedCategory === null && <IconArrowRight size={12} />}
+            Ver Todos <IconArrowRight size={12} />
           </button>
 
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`text-[11px] uppercase tracking-[0.15em] px-6 py-2.5 transition-all duration-300 ${
-                selectedCategory === cat 
-                ? "bg-white text-black font-bold" 
-                : "bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
-              }`}
+              onClick={() => navigate(`/categoria/${encodeURIComponent(cat)}`)}
+              className="text-[11px] uppercase tracking-[0.15em] px-6 py-2.5 transition-all duration-300 bg-white/5 text-white/40 hover:bg-white/10 hover:text-white"
             >
               {cat}
             </button>
@@ -96,7 +83,7 @@ export function BooksSection() {
           className="grid gap-4 [grid-template-columns:repeat(auto-fill,minmax(260px,1fr))]"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProducts.map((book: Product, i: number) => (
+            {products.map((book: Product, i: number) => (
               <motion.div
                 key={book.id}
                 layout
@@ -111,9 +98,9 @@ export function BooksSection() {
           </AnimatePresence>
         </motion.div>
 
-        {filteredProducts.length === 0 && (
+        {products.length === 0 && (
           <div className="py-20 text-center text-white/20 italic font-sans">
-            Nenhum título encontrado nesta categoria.
+            Nenhum título encontrado.
           </div>
         )}
       </div>
