@@ -553,3 +553,13 @@ export function IconLoader({ size = 18, strokeWidth = 1.5, className }: IconProp
     </svg>
   );
 }
+
+export function IconVolume2({ size = 18, strokeWidth = 1.5, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polygon points="3 9 9 9 13 5 13 19 9 15 3 15 3 9" />
+      <path d="M16.72 5.06a9 9 0 0 1 0 13.88M19.37 6.41a5 5 0 0 1 0 7.07" />
+    </svg>
+  );
+}
+

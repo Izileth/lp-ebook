@@ -156,7 +156,7 @@ export function BookCard({ book, index }: BookCardProps) {
 
         {book.video_url && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white/80 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-            <IconVideo size={20} fill="currentColor" />
+            <IconVideo size={20}  />
           </div>
         )}
       </div>

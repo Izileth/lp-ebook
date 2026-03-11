@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconLoader, IconArrowRight, IconVolume2, IconVolumeX } from "../components/Icons";
+import { IconLoader, IconArrowRight} from "../components/Icons";
 
 export function VideoPromotionPage() {
   const location = useLocation();
