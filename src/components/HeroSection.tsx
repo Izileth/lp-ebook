@@ -21,9 +21,11 @@ export function HeroSection() {
   });
 
   const videoPlaylist = [
-    "https://v1.pinimg.com/videos/iht/expMp4/e9/e6/3c/e9e63c701406e2e4ebdf5e540db3b7c6_720w.mp4",
-    "https://v1.pinimg.com/videos/iht/expMp4/73/10/0a/73100ac3ba00396f3c30bd44e558dce6_720w.mp4",
-    "https://v1.pinimg.com/videos/iht/expMp4/3c/66/82/3c6682f50ce9e73a6305fd549d25d18e_720w.mp4"
+    "https://ik.imagekit.io/558cckkpv/Modus_focus_featured_5.mp4?updatedAt=1773333682481",
+    "https://ik.imagekit.io/558cckkpv/Modus_focus_featured_7.mp4?updatedAt=1773333689810",
+    "https://ik.imagekit.io/558cckkpv/Modus_focus_featured_2.mp4?tr=orig&updatedAt=1773333673948",
+    "https://ik.imagekit.io/558cckkpv/modus_focus_featured_video.mp4?updatedAt=1773333671949",
+    "https://ik.imagekit.io/558cckkpv/Modus_focus_featured_6.mp4?updatedAt=1773333661549"
   ];
 
   useEffect(() => {

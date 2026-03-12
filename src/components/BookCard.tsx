@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { Product } from "../types";
 import { cardVariants } from "../motionVariants";
-import { IconBook, IconArrowRight, IconStar, IconMoreHorizontal, IconX, IconGift, IconVideo } from "./Icons";
+import { IconBook, IconArrowRight, IconStar, IconMoreHorizontal, IconX, IconGift, IconVideo, IconMail } from "./Icons";
 import { BookCarousel } from "./book/BookCarousel";
 import { useInteractions } from "../hooks/useInteractions";
 
@@ -201,6 +201,17 @@ export function BookCard({ book, index }: BookCardProps) {
         Adquirir
         <IconArrowRight />
       </motion.button>
+
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          document.getElementById('newsletter')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        className="w-full mt-4 font-sans text-[10px] tracking-[0.15em] uppercase text-white/30 hover:text-white flex items-center justify-center gap-2 transition-colors py-2 border border-white/0 hover:border-white/10"
+      >
+        <IconMail size={12} />
+        Novidades por e-mail
+      </button>
     </motion.article>
   );
 }

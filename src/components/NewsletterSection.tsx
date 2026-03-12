@@ -31,6 +31,7 @@ const NewsletterSection = () => {
 
   return (
     <motion.section
+      id="newsletter"
       variants={stagger}
       initial="hidden"
       whileInView="visible"
