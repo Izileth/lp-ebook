@@ -18,17 +18,6 @@ export function BookPage() {
   const { bookId } = useParams<{ bookId: string }>();
   const { product: book, loading, error } = useProduct(bookId);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { trackInteraction } = useInteractions();
-
-  // Track detailed product view
-  useEffect(() => {
-    if (book) {
-      trackInteraction('product_view', book.id, { 
-        name: book.name,
-        location: 'product_page' 
-      });
-    }
-  }, [book, trackInteraction]);
 
   if (loading) return (
     <div className="min-h-screen bg-black flex items-center justify-center text-white/50 font-sans text-[11px] tracking-widest uppercase">

@@ -18,24 +18,11 @@ export function BookCard({ book, index }: BookCardProps) {
   const { trackInteraction } = useInteractions();
   const [showBonuses, setShowBonuses] = useState(false);
 
-  // Track product view on mount
-  useEffect(() => {
-    trackInteraction('product_view', book.id, { 
-      name: book.name,
-      location: 'card_list' 
-    });
-  }, [book.id, book.name, trackInteraction]);
-
   const handleCardClick = () => {
     navigate(`/ebook/${book.id}`);
   };
 
   const handleCheckout = () => {
-    trackInteraction('cta_click', book.id, {
-      name: book.name,
-      action: 'checkout_from_card'
-    });
-    
     if (book.video_url) {
       navigate('/video-promotion', { 
         state: { 
