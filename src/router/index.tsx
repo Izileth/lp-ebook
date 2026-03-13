@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { useState } from "react";
 import App from "../App";
 import { BookPage } from "../pages/BookPage";
+import { LandingPage } from "../pages/LandingPage";
 import { VideoPromotionPage } from "../pages/VideoPromotionPage";
 import { AdminPage } from "../pages/AdminPage";
 import { LoginPage } from "../pages/LoginPage";
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <App />,
+      },
+      {
+        path: "/lp/:section/:source?/:campaign?/:adgroup?/:ad?",
+        element: <LandingPage />,
       },
       {
         path: "/ebook/:bookId",

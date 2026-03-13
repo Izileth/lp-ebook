@@ -2,7 +2,7 @@
 import { useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
-type InteractionType = 'page_view' | 'product_view' | 'cta_click';
+type InteractionType = 'page_view' | 'product_view' | 'cta_click' | 'ads_click';
 
 export function useInteractions() {
   // Use a ref to track what has already been recorded in this component session
