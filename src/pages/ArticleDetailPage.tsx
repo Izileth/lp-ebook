@@ -11,6 +11,9 @@ import NewsletterSection from "../components/NewsletterSection";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { useArticle } from "../hooks/useArticles";
 
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 export default function ArticleDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -118,9 +121,12 @@ export default function ArticleDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="font-sans text-white/70 text-lg leading-[1.8] space-y-8 prose prose-invert prose-headings:font-serif prose-headings:text-white prose-blockquote:border-white/20 prose-blockquote:text-white/50"
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          />
+            className="font-sans text-white/70 text-lg leading-[1.8] space-y-8 prose prose-invert prose-headings:font-serif prose-headings:text-white prose-blockquote:border-white/20 prose-blockquote:text-white/50 prose-img:border prose-img:border-white/10"
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {article.content}
+            </ReactMarkdown>
+          </motion.div>
 
           <div className="h-24" />
         </article>

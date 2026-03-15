@@ -45,7 +45,7 @@ export function ArticleForm({ article, onSuccess }: ArticleFormProps) {
     image_url: article?.image_url ?? "",
     is_published: article?.is_published ?? false,
     tags: article?.tags ?? [],
-    content_format: (article as any)?.content_format ?? 'html',
+    content_format: (article as any)?.content_format ?? 'markdown',
   });
 
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
