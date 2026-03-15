@@ -58,6 +58,41 @@ function IconVolumeOff({ size = 18 }: { size?: number }) {
   );
 }
 
+function IconInstagram({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
+function IconYoutube({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.46-5.58z" />
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
+    </svg>
+  );
+}
+
+function IconFacebook({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+function IconTiktok({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 12a4 4 0 1 0 4 4V2a5 5 0 0 0 5 5" />
+    </svg>
+  );
+}
+
 // ─── Motion Variants ──────────────────────────────────────────────────────────
 
 const fadeUp: Variants = {
@@ -322,6 +357,60 @@ export function VideoPromotionPage() {
             </motion.button>
           )}
         </AnimatePresence>
+      </motion.div>
+
+      {/* ── Social links ───────────────────────────────────────────────── */}
+      <motion.div
+        custom={0.4}
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 flex flex-col items-center gap-6 mt-12 pb-16 px-4"
+      >
+        <div className="h-px w-12 bg-white/10" />
+        
+        <div className="flex items-center gap-6">
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
+            aria-label="Instagram"
+          >
+            <IconInstagram size={18} />
+          </a>
+          <a
+            href="https://youtube.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
+            aria-label="YouTube"
+          >
+            <IconYoutube size={19} />
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
+            aria-label="Facebook"
+          >
+            <IconFacebook size={18} />
+          </a>
+          <a
+            href="https://tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
+            aria-label="TikTok"
+          >
+            <IconTiktok size={18} />
+          </a>
+        </div>
+
+        <p className="font-sans text-[10px] tracking-[0.25em] uppercase text-white/20">
+          Acompanhe a Focus Conhecimento
+        </p>
       </motion.div>
 
     </div>
