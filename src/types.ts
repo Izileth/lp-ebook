@@ -71,12 +71,19 @@ export interface Article {
   id: string;
   slug: string;
   title: string;
-  excerpt: string;
   content: string;
-  cover_image: string;
-  category: string;
-  author: string;
-  published_at: string;
-  reading_time: string;
+  excerpt: string | null;
+  image_url: string | null;
+  category: string | null;
+  tags: string[] | null;
+  is_published: boolean;
+  published_at: string | null;
+  author_id: string | null;
+  created_at: string;
+  updated_at: string;
+  content_format: 'markdown' | 'html' | 'json';
+  // Extra fields for UI convenience
+  author_name?: string;
+  reading_time?: string;
 }
 

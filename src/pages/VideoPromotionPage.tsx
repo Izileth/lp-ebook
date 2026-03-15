@@ -4,14 +4,14 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { IconArrowRight, IconLoader } from "../components/Icons";
-import type { Variants } from "framer-motion";  
+import type { Variants } from "framer-motion";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface LocationState {
-  videoUrl:    string;
+  videoUrl: string;
   checkoutUrl: string;
-  bookName:    string;
+  bookName: string;
 }
 
 type VideoKind = "youtube" | "vimeo" | "direct";
@@ -20,7 +20,7 @@ type VideoKind = "youtube" | "vimeo" | "direct";
 
 function detectKind(url: string): VideoKind {
   if (url.includes("youtube.com") || url.includes("youtu.be")) return "youtube";
-  if (url.includes("vimeo.com"))                                return "vimeo";
+  if (url.includes("vimeo.com")) return "vimeo";
   return "direct";
 }
 
@@ -68,22 +68,6 @@ function IconInstagram({ size = 18 }: { size?: number }) {
   );
 }
 
-function IconYoutube({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.86 23 12 23 12s0-3.86-.46-5.58z" />
-      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
-    </svg>
-  );
-}
-
-function IconFacebook({ size = 18 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
 
 function IconTiktok({ size = 18 }: { size?: number }) {
   return (
@@ -96,7 +80,7 @@ function IconTiktok({ size = 18 }: { size?: number }) {
 // ─── Motion Variants ──────────────────────────────────────────────────────────
 
 const fadeUp: Variants = {
-  hidden:  { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 16 },
   visible: (d: number = 0) => ({
     opacity: 1, y: 0,
     transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: d },
@@ -104,20 +88,20 @@ const fadeUp: Variants = {
 };
 
 const fadeIn: Variants = {
-  hidden:  { opacity: 0, scale: 0.98 },
+  hidden: { opacity: 0, scale: 0.98 },
   visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
 };
 
 // ─── VideoPromotionPage ───────────────────────────────────────────────────────
 
 export function VideoPromotionPage() {
-  const location  = useLocation();
-  const navigate  = useNavigate();
-  const videoRef  = useRef<HTMLVideoElement>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [isMuted,   setIsMuted]   = useState<boolean>(true);
-  const [progress,  setProgress]  = useState<number>(0);
-  const [canSkip,   setCanSkip]   = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [progress, setProgress] = useState<number>(0);
+  const [canSkip, setCanSkip] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(10);
 
   const state = location.state as LocationState | undefined;
@@ -295,10 +279,10 @@ export function VideoPromotionPage() {
               aria-hidden="true"
               className={`absolute ${pos} w-3 h-3 pointer-events-none z-20`}
               style={{
-                borderTop:    i < 2  ? "1px solid rgba(255,255,255,0.18)" : undefined,
+                borderTop: i < 2 ? "1px solid rgba(255,255,255,0.18)" : undefined,
                 borderBottom: i >= 2 ? "1px solid rgba(255,255,255,0.18)" : undefined,
-                borderLeft:   i % 2 === 0 ? "1px solid rgba(255,255,255,0.18)" : undefined,
-                borderRight:  i % 2 === 1 ? "1px solid rgba(255,255,255,0.18)" : undefined,
+                borderLeft: i % 2 === 0 ? "1px solid rgba(255,255,255,0.18)" : undefined,
+                borderRight: i % 2 === 1 ? "1px solid rgba(255,255,255,0.18)" : undefined,
               }}
             />
           ))}
@@ -368,10 +352,10 @@ export function VideoPromotionPage() {
         className="relative z-10 flex flex-col items-center gap-6 mt-12 pb-16 px-4"
       >
         <div className="h-px w-12 bg-white/10" />
-        
+
         <div className="flex items-center gap-6">
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/modus_focus_?igsh=emxvb2p0Znd6czg0&utm_source=qr"
             target="_blank"
             rel="noopener noreferrer"
             className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
@@ -380,25 +364,25 @@ export function VideoPromotionPage() {
             <IconInstagram size={18} />
           </a>
           <a
-            href="https://youtube.com"
+            href="https://www.instagram.com/focus_billionaiire?igsh=Z2hlMjZxZ3RkNmht&utm_source=qr"
             target="_blank"
             rel="noopener noreferrer"
             className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
-            aria-label="YouTube"
+            aria-label="Instagram"
           >
-            <IconYoutube size={19} />
+            <IconInstagram size={18} />
           </a>
           <a
-            href="https://facebook.com"
+            href="https://www.tiktok.com/@potencial_marco_zero?_r=1&_t=ZS-94iKpk7Kjlg"
             target="_blank"
             rel="noopener noreferrer"
             className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"
-            aria-label="Facebook"
+            aria-label="TikTok"
           >
-            <IconFacebook size={18} />
+            <IconTiktok size={18} />
           </a>
           <a
-            href="https://tiktok.com"
+            href="https://www.tiktok.com/@motivational_unstoppable?_r=1&_t=ZS-94iKngvsDGS"
             target="_blank"
             rel="noopener noreferrer"
             className="w-11 h-11 border border-white/[0.12] bg-white/[0.03] flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all duration-300"

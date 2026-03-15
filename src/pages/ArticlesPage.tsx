@@ -8,49 +8,12 @@ import { NoiseOverlay } from "../components/NoiseOverlay";
 import NewsletterSection from "../components/NewsletterSection";
 import { ArticleCard } from "../components/ArticleCard";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
-import type { Article } from "../types";
-
-const MOCK_ARTICLES: Article[] = [
-  {
-    id: "1",
-    slug: "a-arte-da-produtividade-minimalista",
-    title: "A Arte da Produtividade Minimalista",
-    excerpt: "Como focar no que realmente importa em um mundo cheio de distrações digitais e demandas constantes.",
-    content: "Conteúdo completo aqui...",
-    cover_image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1200",
-    category: "Produtividade",
-    author: "Equipe Focus",
-    published_at: "14 Mar, 2026",
-    reading_time: "5 min"
-  },
-  {
-    id: "2",
-    slug: "financas-para-liberdade",
-    title: "Finanças para a Liberdade",
-    excerpt: "Entenda os pilares da construção de patrimônio e como a mentalidade correta pode acelerar sua independência financeira.",
-    content: "Conteúdo completo aqui...",
-    cover_image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1200",
-    category: "Finanças",
-    author: "Equipe Focus",
-    published_at: "12 Mar, 2026",
-    reading_time: "7 min"
-  },
-  {
-    id: "3",
-    slug: "o-poder-do-habito-de-leitura",
-    title: "O Poder do Hábito de Leitura",
-    excerpt: "Descubra como transformar a leitura em um hábito diário e os benefícios cognitivos de consumir livros regularmente.",
-    content: "Conteúdo completo aqui...",
-    cover_image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200",
-    category: "Desenvolvimento",
-    author: "Equipe Focus",
-    published_at: "10 Mar, 2026",
-    reading_time: "4 min"
-  }
-];
+import { useArticles } from "../hooks/useArticles";
+import { IconLoader } from "../components/Icons";
 
 export default function ArticlesPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { articles, loading, error } = useArticles();
 
   return (
     <div className="bg-black text-white min-h-screen flex flex-col">
@@ -90,13 +53,28 @@ export default function ArticlesPage() {
         </section>
 
         {/* Articles Grid */}
-        <section className="px-10 py-24">
+        <section className="px-10 py-24 min-h-[400px]">
           <div className="max-w-[1200px] mx-auto">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-              {MOCK_ARTICLES.map((article, index) => (
-                <ArticleCard key={article.id} article={article} index={index} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20 gap-4">
+                <IconLoader size={32} className="text-white/20" />
+                <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-white/20">Carregando insights...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-20">
+                <p className="text-white/40 font-sans">{error}</p>
+              </div>
+            ) : articles.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-white/40 font-sans">Nenhum artigo publicado no momento.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                {articles.map((article, index) => (
+                  <ArticleCard key={article.id} article={article} index={index} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
