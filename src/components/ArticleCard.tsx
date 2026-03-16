@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { IconArrowRight, IconClock } from "./Icons";
+import { ShareButtons } from "./ShareButtons";
 import type { Article } from "../types";
 
 interface ArticleCardProps {
@@ -45,13 +46,21 @@ export function ArticleCard({ article, index }: ArticleCardProps) {
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.15em] text-white/30 font-sans">
-            <span>{formattedDate}</span>
-            {article.reading_time && (
-              <span className="flex items-center gap-1.5">
-                <IconClock size={12} /> {article.reading_time}
-              </span>
-            )}
+          <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[0.15em] text-white/30 font-sans">
+            <div className="flex items-center gap-4">
+              <span>{formattedDate}</span>
+              {article.reading_time && (
+                <span className="flex items-center gap-1.5">
+                  <IconClock size={12} /> {article.reading_time}
+                </span>
+              )}
+            </div>
+            
+            <ShareButtons 
+              url={`/artigo/${article.slug}`} 
+              title={article.title} 
+              variant="minimal" 
+            />
           </div>
 
           <h3 className="[font-family:'Playfair_Display',serif] text-xl md:text-2xl font-bold text-white group-hover:text-white/80 transition-colors leading-tight">

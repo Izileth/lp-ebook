@@ -10,6 +10,7 @@ import { IconArrowLeft, IconClock, IconCalendar, IconUser, IconLoader } from "..
 import NewsletterSection from "../components/NewsletterSection";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { useArticle } from "../hooks/useArticles";
+import { ShareButtons } from "../components/ShareButtons";
 import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
 
 export default function ArticleDetailPage() {
@@ -122,8 +123,13 @@ export default function ArticleDetailPage() {
           >
             <MarkdownRenderer 
               content={article.content} 
-              format={article.content as 'markdown' | 'html' | 'json'} 
+              format={article.content as 'markdown' | 'html'} 
+              
             />
+
+            <div className="mt-16 pt-8 border-t border-white/10">
+              <ShareButtons url={`/artigo/${article.slug}`} title={article.title} />
+            </div>
           </motion.div>
 
           <div className="h-24" />
