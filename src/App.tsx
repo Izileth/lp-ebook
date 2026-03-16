@@ -8,8 +8,8 @@ import { OfferCountdown } from "./components/OfferCountdown";
 import { HeroSection } from "./components/HeroSection";
 import { FeaturesStrip } from "./components/FeaturesStrip";
 import { BooksSection } from "./components/BooksSection";
-import { AboutSection } from "./components/AboutSection"; // New Import
-import { ContactSection } from "./components/ContactSection"; // New Import
+import { AboutSection } from "./components/AboutSection"; 
+import { ContactSection } from "./components/ContactSection"; 
 import { CtaSection } from "./components/CtaSection";
 import NewsletterSection from "./components/NewsletterSection";
 import { Footer } from "./components/Footer";

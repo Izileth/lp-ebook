@@ -10,9 +10,7 @@ import { IconArrowLeft, IconClock, IconCalendar, IconUser, IconLoader } from "..
 import NewsletterSection from "../components/NewsletterSection";
 import { fadeUpVariants, staggerContainer } from "../motionVariants";
 import { useArticle } from "../hooks/useArticles";
-
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { MarkdownRenderer } from "../components/ui/MarkdownRenderer";
 
 export default function ArticleDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -58,7 +56,7 @@ export default function ArticleDetailPage() {
       <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       <main className="flex-grow pt-[140px]">
-        <article className="max-w-[800px] mx-auto px-10">
+        <article className="max-w-[720px] mx-auto px-10">
           {/* Back Link */}
           <Link
             to="/artigos"
@@ -121,11 +119,11 @@ export default function ArticleDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="font-sans text-white/70 text-lg leading-[1.8] space-y-8 prose prose-invert prose-headings:font-serif prose-headings:text-white prose-blockquote:border-white/20 prose-blockquote:text-white/50 prose-img:border prose-img:border-white/10"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {article.content}
-            </ReactMarkdown>
+            <MarkdownRenderer 
+              content={article.content} 
+              format={article.content as 'markdown' | 'html' | 'json'} 
+            />
           </motion.div>
 
           <div className="h-24" />
