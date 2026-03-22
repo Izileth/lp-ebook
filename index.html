@@ -10,35 +10,81 @@
     <!-- Compatibilidade -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Título -->
-    <title>FOCUS | Conhecimento</title>
+    <!-- SEO: Título (com palavras-chave fortes) -->
+    <title>FOCUS | Produtividade, Conhecimento e Evolução Pessoal</title>
 
-    <!-- SEO -->
-    <meta name="description" content="FOCUS é uma plataforma focada em conhecimento, produtividade e evolução pessoal." />
+    <!-- SEO: Descrição otimizada -->
+    <meta 
+      name="description" 
+      content="Desenvolva foco, disciplina e produtividade com a FOCUS. Conteúdos práticos sobre conhecimento, evolução pessoal e alta performance." 
+    />
+
+    <!-- SEO: Palavras-chave (menos relevante hoje, mas útil) -->
+    <meta 
+      name="keywords" 
+      content="produtividade, foco, disciplina, evolução pessoal, alta performance, desenvolvimento pessoal, mentalidade, hábitos, sucesso, conhecimento" 
+    />
+
+    <!-- Autor -->
     <meta name="author" content="Modus Focus" />
-    <meta name="keywords" content="produtividade, conhecimento, evolução pessoal, foco, disciplina" />
 
-    <!-- Cor da aba do navegador (Chrome, Edge, Android) -->
+    <!-- Indexação -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- URL canônica (IMPORTANTE) -->
+    <link rel="canonical" href="https://seudominio.com/" />
+
+    <!-- Tema -->
     <meta name="theme-color" content="#010101" />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Apple -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/src/assets/favicons.png" />
-    <link rel="apple-touch-icon" href="/src/assets/favicons.png" />
-
-    <!-- Open Graph (para redes sociais) -->
-    <meta property="og:title" content="FOCUS | Conhecimento" />
-    <meta property="og:description" content="Plataforma focada em conhecimento, motivação e evolução pessoal." />
+    <!-- Open Graph (Facebook, WhatsApp, etc) -->
+    <meta property="og:title" content="FOCUS | Produtividade e Evolução Pessoal" />
+    <meta 
+      property="og:description" 
+      content="Construa disciplina, foco e resultados reais com conteúdos práticos de evolução pessoal e produtividade." 
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/src/assets/favicons.png" />
+    <meta property="og:url" content="https://modusfocus.online/" />
+    <meta property="og:image" content="https://modusfocus.online/og-image.png" />
+    <meta property="og:locale" content="pt_BR" />
+
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="FOCUS | Conhecimento" />
-    <meta name="twitter:description" content="Plataforma focada em conhecimento, produtividade e evolução." />
+    <meta name="twitter:title" content="FOCUS | Produtividade e Evolução" />
+    <meta 
+      name="twitter:description" 
+      content="Foco, disciplina e evolução pessoal com conteúdo prático e direto ao ponto." 
+    />
+    <meta name="twitter:image" content="https://seudominio.com/og-image.png" />
+
+    <!-- Dados estruturados (SEO AVANÇADO - Google) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "FOCUS",
+        "url": "https://seudominio.com/",
+        "logo": "https://seudominio.com/logo.png",
+        "sameAs": [
+          "https://instagram.com/seuuser",
+          "https://twitter.com/seuuser"
+        ]
+      }
+    </script>
 
   </head>
 
@@ -55,7 +101,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'AW-18013719715');
     </script>
 
