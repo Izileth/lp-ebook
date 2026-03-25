@@ -17,7 +17,7 @@ export function HeroSection() {
   const [stats, setStats] = useState<PublicStats>({
     titles_count: 0,
     avg_rating: 4.9,
-    readers_count: 3000,
+    readers_count: 0,
   });
 
 
@@ -39,14 +39,14 @@ export function HeroSection() {
   const displayStats = [
     { value: `${stats.titles_count}+`, label: "Títulos" },
     { value: stats.avg_rating.toFixed(1), label: "Avaliação" },
-    { value: `${(stats.readers_count / 1000).toFixed(1)}k+`, label: "Leitores" },
+    { value: "Centenas", label: "De Leitores" },
   ];
 
   return (
     <section id="home" className="min-h-screen flex items-center px-10 pt-32 pb-20 relative overflow-hidden bg-black">
       {/* Cinematic Video Background with Gradients and Playlist */}
-      <VideoBackground 
-        videoSources={videoPlaylist} 
+      <VideoBackground
+        videoSources={videoPlaylist}
         overlayOpacity={0.4}
       />
 
@@ -69,7 +69,7 @@ export function HeroSection() {
           className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px] text-white"
           style={{ fontSize: "clamp(52px,9vw,120px)" }}
         >
-            <ScrambleText />
+          <ScrambleText />
           <br />
           <em className="not-italic text-white/80">que transforma.</em>
         </motion.h1>

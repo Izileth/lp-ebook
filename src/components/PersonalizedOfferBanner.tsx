@@ -20,7 +20,7 @@ interface DigitProps {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const OFFER_HEADLINE = "Oferta exclusiva para você";
-const OFFER_COPY     = "40% de desconto na sua primeira compra";
+const OFFER_COPY     = "30% de desconto na sua primeira compra";
 const OFFER_CTA      = "Garantir desconto";
 const OFFER_HREF     = "#livros";
 const HOURS_AHEAD    = 4;
@@ -146,7 +146,7 @@ export function PersonalizedOfferBanner() {
   }, []);
 
   useEffect(() => {
-    const showId     = setTimeout(() => setIsVisible(true), 1500);
+    const showId     = setTimeout(() => setIsVisible(true), 15000);
     const intervalId = setInterval(tick, 1000);
     return () => {
       clearTimeout(showId);

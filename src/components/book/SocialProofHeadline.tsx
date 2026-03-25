@@ -157,7 +157,7 @@ export function SocialProofHeadline() {
             <IconUsers size={13} />
           </span>
           <p className="font-sans text-[10px] sm:text-[11px] tracking-[0.14em] uppercase text-white/35">
-            +3.000 leitores satisfeitos
+            Centenas de Leitores Satisfeitos
           </p>
         </div>
 

@@ -7,7 +7,7 @@ import { IconMenu, IconArrowRight, IconUser } from "./Icons";
 import { useAuth } from "../hooks/useAuth";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { useAdmin } from "../hooks/useAdmin";
-import Logo from '../../src/assets/logo.png'
+import Logo from '../../public/icons/fabicon-orginal.png'
 
 interface HeaderProps {
   menuOpen: boolean;
@@ -52,7 +52,7 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
           <img
             src={Logo}
             alt="Logo FOCUS"
-            className="h-6 w-6 object-contain"
+            className="h-8 w-8 object-contain"
           />
           CUS
         </span>
