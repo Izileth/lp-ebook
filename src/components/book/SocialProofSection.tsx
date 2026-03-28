@@ -111,7 +111,7 @@ export function SocialProofSection() {
         
         {/* Seção 1: Depoimentos em Grade */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {TESTIMONIALS.map((t, i) => (
+          {TESTIMONIALS.map((t) => (
             <motion.div
               key={t.id}
               variants={fadeUpVariants}

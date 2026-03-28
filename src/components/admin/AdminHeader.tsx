@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { IconBookOpen, IconTrendingUp, IconUser, IconSettings } from "../Icons";
+import { IconBookOpen, IconTrendingUp, IconUser } from "../Icons";
 import { AdminStatCard } from "./AdminStatCard";
 import { stagger, fadeUp } from "./AdminVariants";
 import type { AdminStats } from "../../types";
