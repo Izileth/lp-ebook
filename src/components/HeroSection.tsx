@@ -56,12 +56,14 @@ export function HeroSection() {
         animate="visible"
         className="max-w-[1200px] mx-auto w-full relative z-10"
       >
+
         {/* Eyebrow */}
         <motion.div variants={fadeUpVariants} className="mb-6">
           <span className="font-sans text-[11px] tracking-[0.25em] uppercase text-white/50 border-l-2 border-white/40 pl-3.5 backdrop-blur-[2px]">
-            Plataforma de Conhecimento
+            Mentis Dominus
           </span>
         </motion.div>
+
 
         {/* Headline */}
         <motion.h1
@@ -71,7 +73,7 @@ export function HeroSection() {
         >
           <ScrambleText />
           <br />
-          <em className="not-italic text-white/80">que transforma.</em>
+          <em className="not-italic text-white/80">Reconstrua sua vida.</em>
         </motion.h1>
 
         {/* Body */}
@@ -80,8 +82,7 @@ export function HeroSection() {
           className="font-sans font-light leading-[1.7] text-white/70 mb-12 max-w-[460px] drop-shadow-sm"
           style={{ fontSize: "clamp(15px,1.5vw,18px)" }}
         >
-          Ebooks cuidadosamente selecionados para quem busca evolução real.
-          Conteúdo direto, profundo e aplicável.
+          Sem motivação barata. Sem promessas vazias. -Apenas conhecimento que muda quem você é.
         </motion.p>
 
         {/* CTAs */}
@@ -92,7 +93,7 @@ export function HeroSection() {
             whileTap={{ scale: 0.97 }}
             className="bg-white text-black font-sans text-[13px] font-medium tracking-[0.1em] uppercase px-8 py-3.5 flex items-center gap-2 hover:bg-white/85 transition-colors"
           >
-            Ver Ebooks <IconArrowRight />
+            Começar Agora <IconArrowRight />
           </motion.a>
           <motion.a
             href="#sobre"
@@ -100,7 +101,7 @@ export function HeroSection() {
             whileTap={{ scale: 0.97 }}
             className="border border-white/25 text-white font-sans text-[13px] font-light tracking-[0.1em] uppercase px-7 py-3.5 hover:border-white/60 hover:bg-white/[0.04] transition-[border-color,background]"
           >
-            Saiba mais
+            Descobrir Mais
           </motion.a>
         </motion.div>
 

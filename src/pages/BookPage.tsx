@@ -171,7 +171,6 @@ export function BookPage() {
 
           {/* SOCIAL PROOF - FINAL */}
           <div className="mt-24 md:mt-32">
-            <SocialProofHeadline />
             <SocialProofSection />
           </div>
 

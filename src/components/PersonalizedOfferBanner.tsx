@@ -22,8 +22,8 @@ interface DigitProps {
 const OFFER_HEADLINE = "Oferta exclusiva para você";
 const OFFER_COPY     = "30% de desconto na sua primeira compra";
 const OFFER_CTA      = "Garantir desconto";
-const OFFER_HREF     = "#livros";
-const HOURS_AHEAD    = 4;
+const OFFER_HREF     = "/livros";
+const HOURS_AHEAD    = 1;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

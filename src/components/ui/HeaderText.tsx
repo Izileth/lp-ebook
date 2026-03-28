@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 const SCRAMBLE_PHRASES = [
-    "Conhecimento",
-    "Liderança",
-    "Estratégia",
-    "Performance",
-    "Disciplina",
+    "Assuma o controle",
+    "Domine sua mente",
+    "Recupere seu valor",
+    "Pare de se sabotar",
+    "Se torne imparável",
 ];
 
 const CHARS = "ABCDEFGHJKLMNOPQRSTUVWXYZ0123456789@#$%&*";

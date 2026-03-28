@@ -23,13 +23,13 @@ const SplashLogo: React.FC<SplashLogoProps> = ({ useFavicon = true, ...motionPro
               className="font-black tracking-[0.02em] text-white"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(40px,6vw,64px)" }}
             >
-              FOCUS
+              MODUS FOCUS
             </span>
             <span
               className="font-light tracking-[0.22em] uppercase text-white/35"
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(11px,1.2vw,14px)" }}
             >
-              | Conhecimento
+              | Mentis Dominus
             </span>
           </div>
 
@@ -41,7 +41,7 @@ const SplashLogo: React.FC<SplashLogoProps> = ({ useFavicon = true, ...motionPro
             className="text-white/30 tracking-[0.3em] uppercase"
             style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10 }}
           >
-            Plataforma de ebooks
+            ALcançe o Domínio da sua mente
           </motion.p>
         </>
       )}

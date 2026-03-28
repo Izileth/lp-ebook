@@ -11,7 +11,7 @@ export function Footer() {
         </div>
 
         <p className="font-sans text-[11px] text-white/25 tracking-wide">
-          © 2025 Focus Conhecimento. Todos os direitos reservados.
+          © 2025 Modus Focus. Todos os direitos reservados.
         </p>
 
         <nav className="flex gap-7">

@@ -215,7 +215,7 @@ export function BookDetails({ book, formattedPrice, formattedDiscountPrice, hasD
         <div className="flex flex-col">
           {hasDiscount && (
             <span className="font-sans text-[14px] text-white/30 line-through mb-1">
-              {formattedPrice}
+              {formattedPrice} BRL
             </span>
           )}
           <span
@@ -223,6 +223,7 @@ export function BookDetails({ book, formattedPrice, formattedDiscountPrice, hasD
             style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(32px,3.5vw,44px)" }}
           >
             {hasDiscount ? formattedDiscountPrice : formattedPrice}
+            BRL
           </span>
         </div>
 

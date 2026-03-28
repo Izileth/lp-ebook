@@ -48,18 +48,19 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
       {/* Logo */}
       <Link to="/" className="flex items-baseline gap-2 no-underline text-white">
         <span className="[font-family:'Playfair_Display',serif] text-xl font-bold tracking-[0.02em] flex items-center">
+          Modus
+        </span>
+
+        <span className="[font-family:'Playfair_Display',serif]  text-xl font-bold tracking-[0.02em] flex items-center">
           F
           <img
             src={Logo}
             alt="Logo FOCUS"
-            className="h-8 w-8 object-contain"
+            className="h-8 w-8 mx-[-0.3em] object-contain"
           />
           CUS
         </span>
 
-        <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-white/30">
-          | Conhecimento
-        </span>
       </Link>
 
       {/* Desktop nav */}

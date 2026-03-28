@@ -169,13 +169,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
                 className="font-black tracking-[0.02em] text-white"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(40px,6vw,64px)" }}
               >
-                FOCUS
+                MODUS FOCUS
               </span>
               <span
                 className="font-light tracking-[0.22em] uppercase text-white/35"
                 style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(11px,1.2vw,14px)" }}
               >
-                | Conhecimento
+                | Mentis Dominus
               </span>
             </div>
 
@@ -186,8 +186,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
               transition={{ delay: 0.55, duration: 0.7 }}
               className="text-white/30 tracking-[0.3em] uppercase"
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10 }}
-            >
-              Plataforma de ebooks
+            >     ALcançe o Domínio da sua mente
             </motion.p>
           </motion.div>
 
@@ -295,13 +294,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadingComplete }) => {
               className="text-white/15 tracking-[0.2em] uppercase"
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9 }}
             >
-              © 2025 Focus Conhecimento
+              © 2025 Modus Focus
             </span>
             <span
               className="text-white/15 tracking-[0.2em] uppercase"
               style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9 }}
             >
-              v1.0
+              v2.1.2
             </span>
           </motion.div>
         </motion.div>

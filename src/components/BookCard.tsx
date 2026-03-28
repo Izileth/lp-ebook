@@ -1,11 +1,11 @@
 // src/components/BookCard.tsx
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
-import {  useState } from "react";
-import type { Product } from "../types";
+import { useState } from "react";
 import { cardVariants } from "../motionVariants";
 import { IconBook, IconArrowRight, IconStar, IconMoreHorizontal, IconX, IconGift, IconVideo, IconMail } from "./Icons";
 import { BookCarousel } from "./book/BookCarousel";
+import type { Product } from "../types";
 
 interface BookCardProps {
   book: Product;
@@ -20,14 +20,18 @@ export function BookCard({ book, index }: BookCardProps) {
     navigate(`/ebook/${book.id}`);
   };
 
+  const handleNavigateBookId = () => {
+    navigate(`/ebook/${book.id}`, { state: { category: book.category } });
+  }
+
   const handleCheckout = () => {
     if (book.video_url) {
-      navigate('/video-promotion', { 
-        state: { 
-          videoUrl: book.video_url, 
+      navigate('/video-promotion', {
+        state: {
+          videoUrl: book.video_url,
           checkoutUrl: book.checkout_url,
           bookName: book.name
-        } 
+        }
       });
     } else if (book.checkout_url) {
       window.location.href = book.checkout_url;
@@ -85,7 +89,7 @@ export function BookCard({ book, index }: BookCardProps) {
                 <IconGift className="text-white/40" size={14} />
                 <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-white/40">Bônus Exclusivos</span>
               </div>
-              <button 
+              <button
                 onClick={toggleBonuses}
                 className="text-white/20 hover:text-white transition-colors"
               >
@@ -114,7 +118,7 @@ export function BookCard({ book, index }: BookCardProps) {
 
       {/* Cover */}
       <div className="relative w-full aspect-[3/4] mb-6 overflow-hidden">
-        <BookCarousel 
+        <BookCarousel
           images={book.product_images}
           name={book.name}
           category={book.category}
@@ -124,7 +128,7 @@ export function BookCard({ book, index }: BookCardProps) {
           showDots={false}
           className="w-full h-full"
         />
-        
+
         {/* Subtle category watermark + Rating */}
         <div className="absolute bottom-4 right-2 z-10 flex items-center gap-2 pointer-events-none">
           <Link
@@ -141,14 +145,14 @@ export function BookCard({ book, index }: BookCardProps) {
 
         {book.video_url && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center text-white/80 opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
-            <IconVideo size={20}  />
+            <IconVideo size={20} />
           </div>
         )}
       </div>
 
       <p className="font-sans text-[10px] tracking-[0.18em] uppercase text-white/40 mb-2 flex items-center gap-1.5">
         <span className="text-white/25"><IconBook /></span>
-        <Link 
+        <Link
           to={`/categoria/${encodeURIComponent(book.category)}`}
           onClick={(e) => e.stopPropagation()}
           className="hover:text-white transition-colors"
@@ -165,28 +169,41 @@ export function BookCard({ book, index }: BookCardProps) {
         <div className="flex flex-col items-end">
           {hasDiscount ? (
             <>
-              <span className="font-sans text-[10px] text-white/20 line-through">R${book.price}</span>
-              <span className="[font-family:'Playfair_Display',serif] text-lg font-bold text-white">R${book.discount_price}</span>
+              <span className="font-sans text-[10px] text-white/20 line-through">R${book.price} BRL</span>
+              <span className="[font-family:'Playfair_Display',serif] text-lg font-bold text-white">R${book.discount_price} BRL</span>
             </>
           ) : (
-            <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">R${book.price}</span>
+            <span className="[font-family:'Playfair_Display',serif] text-lg font-bold">R${book.price} BRL</span>
           )}
         </div>
       </div>
 
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        className="w-full bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase py-3 flex items-center justify-center gap-2 transition-colors duration-200 hover:bg-white/85"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleCheckout();
-        }}
-      >
-        Adquirir
-        <IconArrowRight />
-      </motion.button>
+      <div className="flex flex-col gap-2">
 
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-white text-black font-sans text-[12px] font-medium tracking-[0.1em] uppercase py-3 flex items-center justify-center gap-2 transition-colors duration-200 hover:bg-white/85"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCheckout();
+          }}
+        >
+          Adquirir
+          <IconArrowRight />
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full bg-black text-white font-sans text-[12px] font-medium tracking-[0.1em] uppercase py-3 flex items-center justify-center gap-2 transition-colors duration-200 hover:bg-zinc-900"
+          onClick={handleNavigateBookId}
+        >
+          Detalhes
+          <IconArrowRight />
+        </motion.button>
+
+      </div>
       <button
         onClick={(e) => {
           e.stopPropagation();
