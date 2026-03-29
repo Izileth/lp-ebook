@@ -7,6 +7,7 @@ import { IconArrowRight } from "./Icons";
 import { VideoBackground } from "./VideoBackground";
 import { ScrambleText } from "./ui/HeaderText";
 import { videoPlaylist } from "../constants";
+
 interface PublicStats {
   titles_count: number;
   avg_rating: number;
@@ -69,7 +70,7 @@ export function HeroSection() {
         <motion.h1
           variants={fadeUpVariants}
           className="[font-family:'Playfair_Display',serif] font-black leading-[0.92] tracking-[-0.02em] mb-8 max-w-[800px] text-white"
-          style={{ fontSize: "clamp(52px,9vw,120px)" }}
+          style={{ fontSize: "clamp(12px,9vw,120px)" }}
         >
           <ScrambleText />
           <br />

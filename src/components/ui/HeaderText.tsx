@@ -55,7 +55,7 @@ export function ScrambleText() {
         <span
             className="[font-family:'Playfair_Display',serif] font-black not-italic leading-[0.92] tracking-[-0.02em] text-white/80 inline-block"
             style={{
-                fontSize: "clamp(52px,9vw,120px)",
+                fontSize: "clamp(12px,9vw,120px)",
                 // Subtle flicker tint while scrambling, to signal "noise"
                 color: isScrambling ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.80)",
                 transition: "color 0.15s ease",
