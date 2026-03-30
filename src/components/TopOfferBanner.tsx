@@ -251,12 +251,12 @@ function SlideContent({ slide, timeLeft }: { slide: Slide; timeLeft: TimeLeft })
 
 export function TopOfferCarousel() {
   const targetRef                   = useRef<Date>(getTarget());
-  const [timeLeft,    setTimeLeft]  = useState<TimeLeft>(() => calcTimeLeft(targetRef.current));
+  const [timeLeft,    setTimeLeft]  = useState<TimeLeft>(() => calcTimeLeft(getTarget()));
   const [dismissed,   setDismissed] = useState(false);
   const [current,     setCurrent]   = useState(0);
   const [direction,   setDirection] = useState(1);
   const [isPaused,    setIsPaused]  = useState(false);
-  const autoplayRef                 = useRef<ReturnType<typeof setInterval>>();
+  const autoplayRef                 = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Tick the countdown
   const tick = useCallback(() => {
@@ -294,7 +294,11 @@ export function TopOfferCarousel() {
   useEffect(() => {
     if (isPaused || dismissed) return;
     autoplayRef.current = setInterval(next, AUTOPLAY_INTERVAL);
-    return () => clearInterval(autoplayRef.current);
+    return () => {
+      if (autoplayRef.current !== null) {
+        clearInterval(autoplayRef.current);
+      }
+    };
   }, [isPaused, dismissed, next]);
 
   if (dismissed) return null;

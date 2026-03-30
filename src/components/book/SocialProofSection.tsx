@@ -212,11 +212,8 @@ export function SocialProofSection() {
           <div>
             <ImpactChart />
           </div>
-
-
-
+          
         </div>
-
       </motion.div>
     </section>
   );

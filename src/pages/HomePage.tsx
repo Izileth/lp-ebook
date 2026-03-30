@@ -4,7 +4,11 @@ import { HeroSection } from "../components/HeroSection";
 import { SocialProofCarousel } from "../components/SocialProofCarousel";
 import { FeaturesStrip } from "../components/FeaturesStrip";
 import { BooksSection } from "../components/BooksSection";
-import { EPSDPSection } from "../components/MethodSection";
+import {
+  MethodEPSDPSection,
+  MethodDiagnosisSection,
+  MethodTriadeSection
+} from "../components/MethodSection";
 import { AboutSection } from "../components/AboutSection";
 import { ContactSection } from "../components/ContactSection";
 import { CtaSection } from "../components/CtaSection";
@@ -35,10 +39,12 @@ export function HomePage() {
     <main>
       <HeroSection />
       <SocialProofCarousel />
+      <MethodEPSDPSection />
       <FeaturesStrip />
       <BooksSection />
-      <EPSDPSection />
+      <MethodDiagnosisSection />
       <AboutSection />
+      <MethodTriadeSection />
       <ContactSection />
       <CtaSection />
     </main>
