@@ -95,6 +95,8 @@ export function BarChart() {
                 fill="rgba(255,255,255,0.12)"
                 stroke="rgba(255,255,255,0.18)"
                 strokeWidth="0.5"
+                rx={4} // ← controla arredondamento horizontal
+                ry={4} // ← controla arredondamento vertical
                 initial={{ y: DELTA_H + H, height: 0 }}
                 animate={inView ? { y: yBefore, height: hBefore } : { y: DELTA_H + H, height: 0 }}
                 transition={{ duration: 0.8, delay: gi * 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -105,6 +107,8 @@ export function BarChart() {
                 fill="rgba(0, 188, 125, 1)"
                 stroke="rgba(255,255,255,0.4)"
                 strokeWidth="0.5"
+                rx={4} // ← controla arredondamento horizontal
+                ry={4} // ← controla arredondamento vertical
                 initial={{ y: DELTA_H + H, height: 0 }}
                 animate={inView ? { y: yAfter, height: hAfter } : { y: DELTA_H + H, height: 0 }}
                 transition={{ duration: 1, delay: gi * 0.12 + 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -268,8 +272,8 @@ export function LineChart() {
       >
         <defs>
           <linearGradient id="lg-area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="white" stopOpacity="0.07" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
+            <stop offset="0%" stopColor="rgba(0, 188, 125, 0.3)" />
+            <stop offset="100%" stopColor="rgba(0, 188, 125, 0)" />
           </linearGradient>
           <clipPath id="cp-line">
             <motion.rect
@@ -440,8 +444,8 @@ export function SparklineChart() {
       >
         <defs>
           <linearGradient id="lg-spark" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="white" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
+            <stop offset="0%" stopColor="rgba(0, 188, 125, 0.3)" />
+            <stop offset="100%" stopColor="rgba(0, 188, 125, 0)" />
           </linearGradient>
           <clipPath id="cp-spark">
             <motion.rect

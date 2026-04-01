@@ -15,16 +15,6 @@ export function ScrambleText() {
     const [displayText, setDisplayText] = useState(SCRAMBLE_PHRASES[0]);
     const [isScrambling, setIsScrambling] = useState(false);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const next = (phraseIndex + 1) % SCRAMBLE_PHRASES.length;
-            scramble(SCRAMBLE_PHRASES[next]);
-            setPhraseIndex(next);
-        }, 2000);
-
-        return () => clearInterval(interval);
-    }, [phraseIndex]);
-
     const scramble = (targetText: string) => {
         let iteration = 0;
         setIsScrambling(true);
@@ -50,6 +40,16 @@ export function ScrambleText() {
             iteration += 1 / 3;
         }, 30);
     };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const next = (phraseIndex + 1) % SCRAMBLE_PHRASES.length;
+            scramble(SCRAMBLE_PHRASES[next]);
+            setPhraseIndex(next);
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, [phraseIndex]);
 
     return (
         <span

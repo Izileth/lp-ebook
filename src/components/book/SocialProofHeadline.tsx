@@ -43,7 +43,7 @@ function LiveNumber({ value }: { value: number }) {
           initial="enter"
           animate="center"
           exit="exit"
-          className="[font-family:'Playfair_Display',serif] font-bold text-white"
+          className="[font-family:'Playfair_Display',serif] font-bold text-emerald-500"
         >
           {value}
         </motion.span>
@@ -60,9 +60,9 @@ function LiveDot() {
       <motion.span
         animate={{ scale: [1, 1.9, 1], opacity: [0.55, 0, 0.55] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute inset-0 rounded-full bg-white/50"
+        className="absolute inset-0 rounded-full bg-emerald-500/50 text-emerald-500"
       />
-      <span className="relative rounded-full h-1.5 w-1.5 bg-white/75" />
+      <span className="relative rounded-full h-1.5 w-1.5 bg-emerald-500/75 text-emerald-500" />
     </span>
   );
 }
@@ -129,7 +129,7 @@ export function SocialProofHeadline() {
         {/* ── Viewers ──────────────────────────────────────────────────── */}
         <div className="flex items-center gap-2.5">
           <LiveDot />
-          <p className="font-sans text-[10px] sm:text-[11px] tracking-[0.14em] uppercase text-white/35 flex items-center gap-1">
+          <p className="font-sans text-[10px] sm:text-[11px] tracking-[0.14em] uppercase text-emerald-500 flex items-center gap-1">
             <LiveNumber value={stats.viewers} />
             <span>pessoas vendo agora</span>
           </p>

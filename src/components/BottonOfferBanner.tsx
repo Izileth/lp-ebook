@@ -247,7 +247,7 @@ export function BottonOfferBanner() {
               onClick={() => setDismissed(true)}
               whileHover={{ scale: 1.02, y: -1 }}
               whileTap={{ scale: 0.97 }}
-              className="w-full bg-white text-black font-sans text-[11px] font-medium tracking-[0.12em] uppercase py-3.5 flex items-center justify-center gap-2 hover:bg-white/85 transition-colors duration-200"
+              className="w-full bg-emerald-500 text-white font-sans text-[11px] font-medium tracking-[0.12em] uppercase py-3.5 flex items-center justify-center gap-2 hover:bg-emerald-600   transition-colors duration-200"
             >
               {OFFER_CTA}
               <IconArrowRight size={13} />

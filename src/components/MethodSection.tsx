@@ -82,7 +82,7 @@ function StatsCard({ title, subtitle, badge, children, className = "" }: { title
           </h4>
         </div>
         {badge && (
-          <span className="font-sans text-[10px] font-medium tracking-[0.12em] uppercase text-white/35 border border-white/[0.12] px-2.5 py-1 shrink-0 flex items-center gap-1.5">
+          <span className="font-sans text-[10px] font-medium tracking-[0.12em] uppercase text-emerald-500 border border-esmerald-500/[0.12] px-2.5 py-1 shrink-0 flex items-center gap-1.5">
             {badge}
           </span>
         )}
