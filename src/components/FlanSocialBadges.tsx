@@ -1,7 +1,7 @@
 // src/components/SocialFanBadge.tsx
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { IconTiktok, IconInstagram, IconWhatsapp, IconArrowUpRight, IconEye } from "./Icons";
+import { IconTiktok, IconInstagram, IconWhatsapp, IconArrowUpRight, IconYoutube } from "./Icons";
 import type { Variants } from "framer-motion";
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -43,7 +43,7 @@ const SOCIALS: SocialItem[] = [
     id: "youtube",
     label: "",
     href: "https://youtube.com/",
-    icon: <IconEye />,
+    icon: <IconYoutube />,
     color: "#ee3226",
   },
 
@@ -223,7 +223,7 @@ export function SocialFanBadge() {
         onClick={() => setIsOpen((v) => !v)}
         animate={{
           scale: [1, 1.08, 1],
-          y: [0, -4, 0],
+          y: [14, -4, 14],
         }}
         transition={{
           duration: 1.4,
