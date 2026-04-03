@@ -2,9 +2,10 @@
 
 export const NAV_LINKS = [
   { label: "Doctrina", path: "/livros" },
-  { label: "Modus", path: "/metodo" },
+  { label: "Methodus", path: "/metodo" },
   { label: "De Nobis", path: "/sobre" },
   { label: "Manifestum", path: "/artigos" },
+  { label: "Diagnóstico", path: "/#quiz" },
   { label: "Contactus", path: "/contato" },
 ] as const;
 

@@ -50,3 +50,18 @@ html {
 .animate-scroll-platforms:hover {
   animation-play-state: paused;
 }
+
+.quiz-option {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  text-align: left;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.125rem;
+  transition: all 0.2s;
+}
+.quiz-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(16, 185, 129, 0.5);
+}

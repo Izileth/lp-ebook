@@ -3,11 +3,13 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import { NoiseOverlay } from "./components/NoiseOverlay";
 import { MobileMenu } from "./components/MobileMenu";
+
 import { Header } from "./components/Header";
-import { TopOfferCarousel } from "./components/TopOfferBanner";
-import NewsletterSection from "./components/NewsletterSection";
 import { Footer } from "./components/Footer";
+
 import { supabase } from "./lib/supabaseClient";
+
+import { TopOfferCarousel } from "./components/TopOfferBanner";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -38,12 +40,7 @@ export default function App() {
         <NoiseOverlay />
         <MobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-
-       
-
         <Outlet />
-
-        {!isNoLayoutPage && !isMinimalPage && <NewsletterSection />}
         {!isNoLayoutPage && <Footer />}
       </div>
     </>

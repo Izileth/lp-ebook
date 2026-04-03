@@ -11,6 +11,7 @@ import {
   MethodTriadeSection
 } from "../components/MethodSection";
 import { AboutSection } from "../components/AboutSection";
+import { QuizSection } from "../components/QuizSection";
 import { CtaSection } from "../components/CtaSection";
 import { SocialFanBadge } from "../components/FlanSocialBadges";
 
@@ -23,6 +24,7 @@ export function HomePage() {
       "/sobre": "sobre",
       "/contato": "contato",
       "/metodo": "metodo",
+      "/quiz": "quiz",
     };
 
     const sectionId = pathToId[pathname];
@@ -47,6 +49,7 @@ export function HomePage() {
       <MethodDiagnosisSection />
       <AboutSection />
       <MethodTriadeSection />
+      <QuizSection />
       <CtaSection />
       <SocialFanBadge />
     </main>
