@@ -3,6 +3,7 @@ import { useState } from "react";
 import App from "../App";
 import { HomePage } from "../pages/HomePage";
 import { BookPage } from "../pages/BookPage";
+import { CheckoutPage } from "../pages/CheckoutPage";
 import { LandingPage } from "../pages/LandingPage";
 import { VideoPromotionPage } from "../pages/VideoPromotionPage";
 import { AdminPage } from "../pages/AdminPage";
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
           {
             path: "/livros/:slug",
             element: <BookPage />,
+          },
+          {
+            path: "/checkout",
+            element: <CheckoutPage />,
           },
           {
             path: "/categoria/:categorySlug",

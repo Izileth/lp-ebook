@@ -4,22 +4,10 @@ import { IconArrowRight, IconShield, IconMail, IconBook, IconStar } from "../Ico
 import { fadeUpVariants, stagger } from "./variants";
 import { useInteractions } from "../../hooks/useInteractions";
 
-import type { Bonus } from "../../types";
+import type { Product, Bonus } from "../../types";
 
-interface BookDetailsType {
-  id: string;
-  category: string;
-  name: string;
-  rating: number;
-  description?: string;
-  pages?: string | number;
-  language: string;
-  checkout_url?: string;
-  access_url?: string;
-  video_url?: string;
-  bonuses?: Bonus[];
-  subtitle?: string;
-  author_note?: string;
+interface BookDetailsType extends Product {
+  id: number; // Override string id if needed, but let's just use Product
 }
 
 interface StatItemProps {
@@ -64,21 +52,17 @@ export function BookDetails({ book, formattedPrice, formattedDiscountPrice, hasD
   const navigate = useNavigate();
 
   const handleCheckout = (e: React.MouseEvent) => {
+    e.preventDefault();
     trackInteraction('cta_click', book.id, {
       name: book.name,
       action: 'checkout_from_details'
     });
 
-    if (book.video_url) {
-      e.preventDefault();
-      navigate('/video-promotion', { 
-        state: { 
-          videoUrl: book.video_url, 
-          checkoutUrl: book.checkout_url,
-          bookName: book.name
-        } 
-      });
-    }
+    navigate('/checkout', { 
+      state: { 
+        product: book 
+      } 
+    });
   };
 
   return (
