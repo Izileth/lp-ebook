@@ -52,8 +52,9 @@ export function CheckoutPage() {
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(255,255,255,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
 
       <main className="relative z-10 max-w-[1000px] mx-auto px-6 py-12 md:py-24">
+
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-12 z-50">
           <Link
             to={`/livros/${product.slug}`}
             className="group inline-flex items-center gap-2 text-[12px] tracking-[0.12em] uppercase text-white/45 hover:text-white transition"
@@ -141,7 +142,7 @@ export function CheckoutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white/[0.03] border border-white/10 p-8 md:p-12"
+            className="bg-black border border-white/10 p-8 md:p-12"
           >
             <h2 className="text-[11px] tracking-[0.3em] uppercase text-white/30 mb-8 border-b border-white/10 pb-4">
               Confirmação

@@ -7,8 +7,6 @@ import { FeaturesStrip } from "../components/FeaturesStrip";
 import { BooksSection } from "../components/BooksSection";
 import {
   MethodEPSDPSection,
-  MethodDiagnosisSection,
-  MethodTriadeSection
 } from "../components/MethodSection";
 import { AboutSection } from "../components/AboutSection";
 import { QuizSection } from "../components/QuizSection";
@@ -48,8 +46,6 @@ export function HomePage() {
       <SocialProofCarousel />
       <QuizSection />
       <AboutSection />
-      <MethodTriadeSection />
-      <MethodDiagnosisSection />
       <CtaSection />
       <SocialFanBadge />
     </main>

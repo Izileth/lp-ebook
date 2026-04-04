@@ -4,7 +4,7 @@ import { IconArrowRight, IconShield, IconMail, IconBook, IconStar } from "../Ico
 import { fadeUpVariants, stagger } from "./variants";
 import { useInteractions } from "../../hooks/useInteractions";
 
-import type { Product, Bonus } from "../../types";
+import type { Product} from "../../types";
 
 interface BookDetailsType extends Product {
   id: number; // Override string id if needed, but let's just use Product
