@@ -12,6 +12,7 @@ import { AboutSection } from "../components/AboutSection";
 import { QuizSection } from "../components/QuizSection";
 import { CtaSection } from "../components/CtaSection";
 import { SocialFanBadge } from "../components/FlanSocialBadges";
+import { HonorableMentionsSection } from "../components/HonorableMentions";
 
 export function HomePage() {
   const { pathname } = useLocation();
@@ -23,6 +24,7 @@ export function HomePage() {
       "/contato": "contato",
       "/metodo": "metodo",
       "/quiz": "quiz",
+      "/hall": "hall",
     };
 
     const sectionId = pathToId[pathname];
@@ -43,6 +45,7 @@ export function HomePage() {
       <MethodEPSDPSection />
       <FeaturesStrip />
       <BooksSection />
+      <HonorableMentionsSection />
       <SocialProofCarousel />
       <QuizSection />
       <AboutSection />
